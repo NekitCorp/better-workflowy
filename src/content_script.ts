@@ -1,4 +1,5 @@
 import setHotkey from "hotkeys-js";
+import { createObserver, highlight, renderTotalTime } from "./utils/time";
 
 setHotkey.filter = function (event) {
     return true;
@@ -10,7 +11,14 @@ chrome.storage.sync.get(
         calcTotalTime: true,
     },
     function ({ hotkeys, calcTotalTime }: IOptions) {
-        console.log(hotkeys);
+        // Start calculate total time
+        if (calcTotalTime) {
+            highlight();
+            renderTotalTime();
+            createObserver();
+        }
+
+        // Start hotkeys
         for (const hotkey of hotkeys) {
             setHotkey(`${hotkey.specialKey}+${hotkey.key}`, function (event, handler) {
                 // Prevent the default refresh event under WINDOWS system
