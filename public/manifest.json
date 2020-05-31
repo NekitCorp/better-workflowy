@@ -1,24 +1,28 @@
 {
-    "manifest_version": 2,
-    "name": "Chrome Extension TypeScript Starter",
-    "description": "Chrome Extension, TypeScript, Visual Studio Code",
+    "name": "Better WorkFlowy",
+    "description": "Enhance WorkFlowy",
     "version": "1.0",
+    "manifest_version": 2,
     "options_ui": {
         "page": "options.html",
         "chrome_style": true
     },
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
     "browser_action": {
-        "default_icon": "icon.png",
         "default_popup": "popup.html"
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
+            "matches": ["*://www.workflowy.com/*", "*://workflowy.com/*"],
             "js": ["js/content_script.js"]
         }
     ],
     "background": {
         "scripts": ["js/background.js"]
     },
-    "permissions": ["storage", "<all_urls>"]
+    "permissions": ["storage"]
 }

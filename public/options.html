@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>My Test Extension Options</title>
-  <script src="js/vendor.js"></script>
+    <title>Extension options</title>
+    <script src="js/vendor.js"></script>
+
+    <style>
+        .remove-button {
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .remove-button:hover {
+            background: #eee;
+        }
+    </style>
 </head>
 
 <body>
-  Favorite color:
-  <select id="color">
-   <option value="red">red</option>
-   <option value="green">green</option>
-   <option value="blue">blue</option>
-   <option value="yellow">yellow</option>
-  </select>
+    <label>
+        <input type="checkbox" id="calc-total-time">
+        Calculate total time
+    </label>
 
-  <label>
-    <input type="checkbox" id="like">
-    I like colors.
-  </label>
+    <p>Hashtag hotkeys:</p>
+    <div id="hotkeys"></div>
+    <button id="add-hotkey">&#x2795;</button>
 
-  <div id="status"></div>
-  <button id="save">Save</button>
+    <p id="status"></p>
+    <button id="save">Save</button>
 
-  <script src="js/options.js"></script>
+    <script src="js/options.js"></script>
 </body>
+
 </html>
