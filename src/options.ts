@@ -117,7 +117,7 @@ function createHotKeyBlock(hotkeyOption: IOptions["hotkeys"][0]) {
 
 // Saves options to chrome.storage.sync.
 function save_options() {
-    const calcTotalTime = (document.getElementById("calc-total-time") as HTMLInputElement).value;
+    const calcTotalTime = (document.getElementById("calc-total-time") as HTMLInputElement).checked;
     const hotkeys = [...document.getElementById("hotkeys").childNodes].map((node) => {
         const specialKey = ((node as HTMLElement).querySelector(".skselect") as HTMLInputElement).value;
         const key = ((node as HTMLElement).querySelector(".kselect") as HTMLInputElement).value;
