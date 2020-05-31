@@ -1,19 +1,17 @@
 {
-    "name": "chrome-extension-typescript-starter",
-    "version": "1.0.0",
-    "description": "chrome-extension-typescript-starter",
-    "main": "index.js",
+    "name": "better-workflowy",
     "scripts": {
         "watch": "webpack --config webpack/webpack.dev.js --watch",
         "build": "webpack --config webpack/webpack.prod.js",
         "clean": "rimraf dist",
         "test": "npx jest"
     },
-    "author": "",
-    "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
+        "url": "https://github.com/nekitcorp/better-workflowy.git"
+    },
+    "dependencies": {
+        "hotkeys-js": "^3.8.1"
     },
     "devDependencies": {
         "@types/chrome": "^0.0.114",
@@ -27,8 +25,5 @@
         "webpack": "~4.42.0",
         "webpack-cli": "~3.3.11",
         "webpack-merge": "~4.2.2"
-    },
-    "dependencies": {
-        "hotkeys-js": "^3.8.1"
     }
 }

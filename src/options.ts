@@ -98,15 +98,19 @@ function createHotKeyBlock(hotkeyOption: IOptions["hotkeys"][0]) {
 
     // Remove button
     const button = document.createElement("button");
-    button.classList.add("remove-button");
+    button.classList.add("emoji-button");
     button.innerText = String.fromCodePoint(0x2796);
 
     // Wrapper
     const div = document.createElement("div");
+    div.classList.add("hotkey-block");
     div.appendChild(specialKeysSelect);
     div.appendChild(keysSelect);
     div.appendChild(input);
     div.appendChild(button);
+
+    // Remove listener
+    button.addEventListener("click", () => div.remove());
 
     return div;
 }
@@ -130,10 +134,10 @@ function save_options() {
         function () {
             // Update status to let user know options were saved.
             var status = document.getElementById("status");
-            status.innerText = "Options saved.";
+            status.innerText = "Options saved!";
             setTimeout(function () {
                 status.textContent = "";
-            }, 750);
+            }, 1500);
         }
     );
 }

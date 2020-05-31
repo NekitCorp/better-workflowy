@@ -6,15 +6,38 @@
     <script src="js/vendor.js"></script>
 
     <style>
-        .remove-button {
+        label {
+            display: flex;
+            align-items: center;
+        }
+
+        label>input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
             cursor: pointer;
+        }
+
+        .emoji-button {
             border: none;
             background: transparent;
             box-shadow: none;
         }
 
-        .remove-button:hover {
+        .emoji-button:hover {
             background: #eee;
+        }
+
+        .hotkey-block {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .save-block {
+            margin-top: 10px;
+            color: green;
         }
     </style>
 </head>
@@ -26,11 +49,14 @@
     </label>
 
     <p>Hashtag hotkeys:</p>
+    <p>&#x1F64B; Enter hashtag(without #) to input or empty to clear</p>
     <div id="hotkeys"></div>
-    <button id="add-hotkey">&#x2795;</button>
+    <button id="add-hotkey" class="emoji-button">&#x2795;</button>
 
-    <p id="status"></p>
-    <button id="save">Save</button>
+    <div class="save-block">
+        <button id="save">Save</button>
+        <span id="status"></span>
+    </div>
 
     <script src="js/options.js"></script>
 </body>
