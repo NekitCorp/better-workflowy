@@ -1,6 +1,8 @@
 import setHotkey from "hotkeys-js";
+import { IOptions } from "./options";
 import { createObserver, highlight, renderTotalTime } from "./utils/time";
 
+// By default hotkeys are not enabled for INPUT, SELECT, TEXTAREA elements.
 setHotkey.filter = function (event) {
     return true;
 };
@@ -33,13 +35,3 @@ chrome.storage.sync.get(
         }
     }
 );
-
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-    if (msg.color) {
-        console.log("Receive color = " + msg.color);
-        document.body.style.backgroundColor = msg.color;
-        sendResponse("Change color to " + msg.color);
-    } else {
-        sendResponse("Color message is none.");
-    }
-});

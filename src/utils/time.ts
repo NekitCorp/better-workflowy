@@ -29,9 +29,8 @@ export function createObserver() {
 /**
  * Parse and calculate total seconds from tag string
  * @example "#2h20m" -> 8400
- * @param {string} str
  */
-function getTagSeconds(str) {
+export function getTagSeconds(str: string) {
     // Test to fit string
     const regExp = /^#(\d+(d|h|m|s))+$/;
     if (!regExp.test(str)) {
@@ -76,7 +75,9 @@ export function renderTotalTime() {
     }
 
     // Calculate total time
-    const tags = [...document.querySelectorAll(".contentTag")].map((el: HTMLElement) => el.innerText);
+    const tags = [...document.querySelectorAll(".contentTag")].map(
+        (el: HTMLElement) => el.innerText
+    );
     let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
 
     const days = Math.floor(totalSeconds / 86400);

@@ -1,4 +1,6 @@
-type IOptions = {
+import { keys, specialKeys } from "./utils/keyboard-keys";
+
+export type IOptions = {
     hotkeys: {
         specialKey: typeof specialKeys[any];
         key: typeof keys[any];
@@ -6,68 +8,6 @@ type IOptions = {
     }[];
     calcTotalTime: boolean;
 };
-
-const specialKeys = ["ctrl", "shift", "alt"] as const;
-const keys = [
-    "escape",
-    "pageup",
-    "space",
-    "pagedown",
-    "end",
-    "home",
-    "left",
-    "up",
-    "right",
-    "down",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-    "f1",
-    "f2",
-    "f3",
-    "f4",
-    "f5",
-    "f6",
-    "f7",
-    "f8",
-    "f9",
-    "f10",
-    "f11",
-    "f12",
-] as const;
 
 function createSelect(options: readonly string[], className: string, defaultValue: string) {
     const select = document.createElement("select");
@@ -116,10 +56,11 @@ function createHotKeyBlock(hotkeyOption: IOptions["hotkeys"][0]) {
 }
 
 // Saves options to chrome.storage.sync.
-function save_options() {
+function saveOptions() {
     const calcTotalTime = (document.getElementById("calc-total-time") as HTMLInputElement).checked;
     const hotkeys = [...document.getElementById("hotkeys").childNodes].map((node) => {
-        const specialKey = ((node as HTMLElement).querySelector(".skselect") as HTMLInputElement).value;
+        const specialKey = ((node as HTMLElement).querySelector(".skselect") as HTMLInputElement)
+            .value;
         const key = ((node as HTMLElement).querySelector(".kselect") as HTMLInputElement).value;
         const hash = ((node as HTMLElement).querySelector("input") as HTMLInputElement).value;
 
@@ -144,14 +85,16 @@ function save_options() {
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
-function restore_options() {
+function restoreOptions() {
     chrome.storage.sync.get(
         {
             hotkeys: [],
             calcTotalTime: true,
         },
         function ({ hotkeys, calcTotalTime }: IOptions) {
-            (document.getElementById("calc-total-time") as HTMLInputElement).checked = calcTotalTime;
+            (document.getElementById(
+                "calc-total-time"
+            ) as HTMLInputElement).checked = calcTotalTime;
 
             for (const hotkey of hotkeys) {
                 document.getElementById("hotkeys").appendChild(createHotKeyBlock(hotkey));
@@ -160,8 +103,10 @@ function restore_options() {
     );
 }
 
-document.getElementById("save").addEventListener("click", save_options);
+document.getElementById("save").addEventListener("click", saveOptions);
 document.getElementById("add-hotkey").addEventListener("click", () => {
-    document.getElementById("hotkeys").appendChild(createHotKeyBlock({ specialKey: "shift", key: "home", hash: "" }));
+    document
+        .getElementById("hotkeys")
+        .appendChild(createHotKeyBlock({ specialKey: "shift", key: "home", hash: "" }));
 });
-document.addEventListener("DOMContentLoaded", restore_options);
+document.addEventListener("DOMContentLoaded", restoreOptions);
