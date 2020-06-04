@@ -27,7 +27,8 @@ chrome.storage.sync.get(
                 event.preventDefault();
 
                 if (hotkey.hash) {
-                    location.hash = `?q=#${hotkey.hash} `;
+                    location.hash =
+                        "?q=" + hotkey.hash.split(" ").reduce((acc, val) => `${acc}#${val} `, "");
                 } else {
                     location.hash = "";
                 }
