@@ -64,13 +64,13 @@ export function getTagSeconds(str: string) {
 }
 
 /**
- * Render total recognized time in scroller
+ * Render total recognized time in header
  */
 export function renderTotalTime() {
-    // Try fine scroller
-    const scroller = document.querySelector(".scroller");
+    // Try find header
+    const header = document.querySelector(".header");
 
-    if (!scroller) {
+    if (!header) {
         return;
     }
 
@@ -98,12 +98,10 @@ export function renderTotalTime() {
     const seconds = totalSeconds;
 
     const totalHtml =
-        "Total time: <b>" +
         (days > 0 ? days + "d " : "") +
         (hours > 0 ? hours + "h " : "") +
         (minutes > 0 ? minutes + "m " : "") +
-        (seconds > 0 ? seconds + "s" : "") +
-        "</b>";
+        (seconds > 0 ? seconds + "s" : "");
 
     // Try find already added counter
     const counter = document.getElementById(COUNTER_ID);
@@ -115,9 +113,10 @@ export function renderTotalTime() {
 
         div.innerHTML = totalHtml;
         div.id = COUNTER_ID;
-        div.style.paddingLeft = 23 + "px";
+        div.style.fontSize = 13 + "px";
 
-        scroller.appendChild(div);
+        const breadcrumbs = header.querySelector(".breadcrumbs");
+        header.insertBefore(div, breadcrumbs.nextSibling);
     }
 }
 
