@@ -1,61 +1,12 @@
-import { keys, specialKeys } from "./utils/keyboard-keys";
+import { createHotKeyBlock } from "./utils/dom";
+import { IHotkey } from "./utils/keyboard-keys";
 
 export type IOptions = {
-    hotkeys: {
-        specialKey: typeof specialKeys[any];
-        key: typeof keys[any];
-        hash: string;
-    }[];
+    hotkeys: (IHotkey & { hash: string })[];
     calcTotalTime: boolean;
 };
 
-function createSelect(options: readonly string[], className: string, defaultValue: string) {
-    const select = document.createElement("select");
-    select.classList.add(className);
-
-    for (const key of options) {
-        const option = document.createElement("option");
-        option.innerText = key;
-        option.value = key;
-        select.appendChild(option);
-    }
-
-    select.value = defaultValue;
-
-    return select;
-}
-
-function createHotKeyBlock(hotkeyOption: IOptions["hotkeys"][0]) {
-    const { hash, key, specialKey } = hotkeyOption;
-
-    // Selects
-    const specialKeysSelect = createSelect(specialKeys, "skselect", specialKey);
-    const keysSelect = createSelect(keys, "kselect", key);
-
-    // Input
-    const input = document.createElement("input");
-    input.value = hash;
-
-    // Remove button
-    const button = document.createElement("button");
-    button.classList.add("emoji-button");
-    button.innerText = String.fromCodePoint(0x2796);
-
-    // Wrapper
-    const div = document.createElement("div");
-    div.classList.add("hotkey-block");
-    div.appendChild(specialKeysSelect);
-    div.appendChild(keysSelect);
-    div.appendChild(input);
-    div.appendChild(button);
-
-    // Remove listener
-    button.addEventListener("click", () => div.remove());
-
-    return div;
-}
-
-// Saves options to chrome.storage.sync.
+// Saves options to chrome.storage
 function saveOptions() {
     const calcTotalTime = (document.getElementById("calc-total-time") as HTMLInputElement).checked;
     const hotkeys = [...document.getElementById("hotkeys").childNodes].map((node) => {
@@ -83,8 +34,7 @@ function saveOptions() {
     );
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
+// Restores options from chrome.storage
 function restoreOptions() {
     chrome.storage.sync.get(
         {

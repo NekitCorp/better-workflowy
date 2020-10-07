@@ -1,4 +1,7 @@
+export type ISpecialKey = typeof specialKeys[any];
 export const specialKeys = ["ctrl", "shift", "alt"] as const;
+
+export type IKey = typeof keys[any];
 export const keys = [
     "escape",
     "pageup",
@@ -59,3 +62,8 @@ export const keys = [
     "f11",
     "f12",
 ] as const;
+
+export type IHotkey = {
+    specialKey: ISpecialKey;
+    key: IKey;
+};
