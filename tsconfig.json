@@ -1,12 +1,12 @@
 {
+    "extends": "@tsconfig/svelte/tsconfig.json",
+
+    "include": ["src/**/*"],
+    "exclude": ["node_modules/*", "public/*"],
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "noImplicitAny": false,
         "sourceMap": false,
-        "rootDir": "src",
-        "outDir": "dist/js",
-        "noEmitOnError": true,
-        "typeRoots": ["node_modules/@types"]
+        "isolatedModules": false,
+        "typeRoots": ["node_modules/@types"],
+        "types": ["svelte", "chrome", "jest"]
     }
 }

@@ -1,4 +1,4 @@
-import { IOptions } from "../options";
+import type { IStorage } from "../storage";
 import { keys, specialKeys } from "./keyboard-keys";
 
 function createSelect(options: readonly string[], className: string, defaultValue: string) {
@@ -17,7 +17,7 @@ function createSelect(options: readonly string[], className: string, defaultValu
     return select;
 }
 
-export function createHotKeyBlock(hotkeyOption: IOptions["hotkeys"][0]) {
+export function createHotKeyBlock(hotkeyOption: IStorage["hotkeys"][0]) {
     const { hash, key, specialKey } = hotkeyOption;
 
     // Selects
