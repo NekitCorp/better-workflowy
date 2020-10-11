@@ -1,19 +1,21 @@
 import type { IHotkey } from "./utils/keyboard-keys";
 
 export type IStorage = {
-    hotkeys: (IHotkey & { hash: string })[];
+    /** Filter by hashtags on hotkey */
+    filters: Array<IHotkey & { hashtags: string }>;
+
+    /** Calculate total hashtags time */
     calcTotalTime: boolean;
+
+    /** Swap hashtags on hotkey */
     swapHashtags: {
-        from: string;
-        to: string;
-    };
-};
-export type ITest = {
-    ad: number;
+        delete: string;
+        insert: string;
+    } & IHotkey;
 };
 
 export const defaultStorage: IStorage = {
-    hotkeys: [],
+    filters: [],
     calcTotalTime: true,
     swapHashtags: null,
 };
