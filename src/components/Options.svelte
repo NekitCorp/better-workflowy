@@ -51,6 +51,11 @@
     .filter-container {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .help:last-of-type {
+        margin-bottom: 10px;
     }
 
     .emoji-button {
@@ -68,25 +73,37 @@
     .emoji-button:hover {
         background: var(--blue);
     }
+
+    .add-filter-button {
+        display: block;
+        margin: 0 auto;
+    }
 </style>
 
 <div class="container">
     {#if options}
         <Fieldset title="Filter by hashtags on hotkey">
-            <div>🙋 Filter by one: <b>today</b></div>
-            <div>🙋 Multiple filter: <b>today 5m</b></div>
-            <div>🙋 Clear filter: <i>leave the input empty</i></div>
+            <div class="help">🙋 Filter by one: <b>today</b></div>
+            <div class="help">🙋 Multiple filter: <b>today 5m</b></div>
+            <div class="help">🙋 Clear filter: <i>leave the input empty</i></div>
             {#each options.filters as filter}
                 <div class="filter-container">
                     <Hotkey bind:key={filter.key} bind:specialKey={filter.specialKey} />
                     <input type="text" bind:value={filter.hashtags} />
-                    <button class="emoji-button" on:click={() => removeFilter(filter)}>➖</button>
+                    <button
+                        class="emoji-button"
+                        title="Delete filter"
+                        on:click={() => removeFilter(filter)}>➖</button>
                 </div>
             {/each}
-            <button class="emoji-button" on:click={addFilter}>➕</button>
+            <button
+                class="emoji-button add-filter-button"
+                title="Add new filter"
+                on:click={addFilter}>➕</button>
         </Fieldset>
 
         <Fieldset title="Swap hashtags on hotkey">
+            <div class="help">🙋 Leave the input empty to skip action</div>
             <label><input
                     type="checkbox"
                     checked={Boolean(options.swapHashtags)}
