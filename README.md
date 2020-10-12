@@ -39,3 +39,23 @@ Features:
 > Required option `Swap hashtags on hotkey` in extension settings
 
 ![presentation4](https://i.gyazo.com/8070f0fc6904d0a9621c7f81b7b3bcc9.gif)
+
+## Development
+
+[Getting Started Tutorial](https://developer.chrome.com/extensions/getstarted)
+
+```bash
+# build files to './public/build'
+# rollup.watch rebuilds your bundle when it detects changes
+npm run dev
+```
+
+```bash
+# production build files to './public/build'
+$ npm run build
+```
+
+```bash
+# run tests
+$ npm run test
+```
