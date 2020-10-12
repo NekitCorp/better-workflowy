@@ -54,10 +54,6 @@
         margin-bottom: 5px;
     }
 
-    .help:last-of-type {
-        margin-bottom: 10px;
-    }
-
     .emoji-button {
         border: none;
         background: transparent;
@@ -78,14 +74,33 @@
         display: block;
         margin: 0 auto;
     }
+
+    label {
+        display: flex;
+        align-items: center;
+    }
+
+    .swap-hashtags-label {
+        margin: 5px 0;
+    }
+
+    .swap-hashtags-label > input {
+        flex: 1;
+        margin-left: 5px;
+    }
+
+    .success {
+        color: green;
+        font-weight: bold;
+    }
 </style>
 
 <div class="container">
     {#if options}
         <Fieldset title="Filter by hashtags on hotkey">
-            <div class="help">🙋 Filter by one: <b>today</b></div>
-            <div class="help">🙋 Multiple filter: <b>today 5m</b></div>
-            <div class="help">🙋 Clear filter: <i>leave the input empty</i></div>
+            <div>🙋 Filter by one: <b>today</b></div>
+            <div>🙋 Multiple filter: <b>today 5m</b></div>
+            <div style="margin-bottom: 10px">🙋 Clear filter: <i>leave the input empty</i></div>
             {#each options.filters as filter}
                 <div class="filter-container">
                     <Hotkey bind:key={filter.key} bind:specialKey={filter.specialKey} />
@@ -103,19 +118,22 @@
         </Fieldset>
 
         <Fieldset title="Swap hashtags on hotkey">
-            <div class="help">🙋 Leave the input empty to skip action</div>
+            <div style="margin-bottom: 10px">🙋 Leave the input empty to skip action</div>
             <label><input
                     type="checkbox"
                     checked={Boolean(options.swapHashtags)}
                     on:change={toggleSwapHashtags} />Enabled</label>
             {#if Boolean(options.swapHashtags)}
-                <label>Insert hashtags:
+                <label class="swap-hashtags-label">Insert hashtags:
                     <input type="text" bind:value={options.swapHashtags.insert} /></label>
-                <label>Delete hashtags:
+                <label class="swap-hashtags-label">Delete hashtags:
                     <input type="text" bind:value={options.swapHashtags.delete} /></label>
-                <Hotkey
-                    bind:key={options.swapHashtags.key}
-                    bind:specialKey={options.swapHashtags.specialKey} />
+                <div>
+                    Hotkey:
+                    <Hotkey
+                        bind:key={options.swapHashtags.key}
+                        bind:specialKey={options.swapHashtags.specialKey} />
+                </div>
             {/if}
         </Fieldset>
 
@@ -125,8 +143,10 @@
             </label>
         </Fieldset>
 
-        <div class="save-block"><button on:click={save}>Save</button></div>
-        {#if successMessage}<span class="success">{successMessage}</span>{/if}
+        <div>
+            <button on:click={save}>Save</button>
+            {#if successMessage}<span class="success">{successMessage}</span>{/if}
+        </div>
     {:else}
         <p>Loading...</p>
     {/if}

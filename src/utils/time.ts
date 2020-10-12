@@ -114,6 +114,7 @@ export function renderTotalTime() {
         div.innerHTML = totalHtml;
         div.id = COUNTER_ID;
         div.style.fontSize = 13 + "px";
+        div.style.marginRight = 10 + "px";
 
         const breadcrumbs = header.querySelector(".breadcrumbs");
         header.insertBefore(div, breadcrumbs.nextSibling);
