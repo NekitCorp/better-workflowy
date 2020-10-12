@@ -15,7 +15,7 @@
     "content_scripts": [
         {
             "matches": ["*://www.workflowy.com/*", "*://workflowy.com/*"],
-            "js": ["js/content_script.js"]
+            "js": ["build/content_script.js"]
         }
     ],
     "permissions": ["storage"]
