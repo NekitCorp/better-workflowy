@@ -1,10 +1,16 @@
 # Better WorkFlowy
 
-> Google Chrome extension for improvement [workflowy](https://workflowy.com/)
+Google Chrome extension for improvement [workflowy](https://workflowy.com/)
+
+Features:
+
+-   [Calculate total hashtag time](#calculate-total-hashtag-time)
+-   [Filter by hashtags on hotkey](#filter-by-hashtags-on-hotkey)
+-   [Swap hashtags on hotkey](#swap-hashtags-on-hotkey)
 
 ## Extension settings
 
-![settings](https://i.gyazo.com/c4b6ce29fcc602e225516c199ae51c83.png)
+![settings](https://i.gyazo.com/30540a1e6e97380bc659c5291f07e4fd.png)
 
 ## Features
 
