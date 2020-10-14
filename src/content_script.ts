@@ -37,9 +37,8 @@ chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags 
             // Prevent the default refresh event under WINDOWS system
             event.preventDefault();
 
-            const innerContentContainer = document.activeElement.querySelector(
-                ".innerContentContainer"
-            );
+            const activeElement = document.activeElement;
+            const innerContentContainer = activeElement.querySelector(".innerContentContainer");
 
             if (innerContentContainer) {
                 const deleteTags = swapHashtags.delete ? swapHashtags.delete.split(" ") : [];
@@ -62,6 +61,10 @@ chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags 
                         " <span"
                     );
                 }
+
+                // Reset focus to force save changes in workflowy
+                (activeElement as HTMLElement).blur();
+                (activeElement as HTMLElement).focus();
             }
         });
     }
