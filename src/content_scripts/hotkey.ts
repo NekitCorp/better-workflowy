@@ -18,39 +18,41 @@ export function startFiltersOnHotkey(filters: IStorage["filters"]) {
     }
 }
 
-export function startSwapHashtagsOnHotkey(swapHashtags: IStorage["swapHashtags"]) {
-    setHotkey(`${swapHashtags.specialKey}+${swapHashtags.key}`, function (event, handler) {
-        // Prevent the default refresh event under WINDOWS system
-        event.preventDefault();
+export function startSwaps(swaps: IStorage["swaps"]) {
+    for (const swap of swaps) {
+        setHotkey(`${swap.specialKey}+${swap.key}`, function (event, handler) {
+            // Prevent the default refresh event under WINDOWS system
+            event.preventDefault();
 
-        const activeElement = document.activeElement;
-        const innerContentContainer = activeElement.querySelector(".innerContentContainer");
+            const activeElement = document.activeElement;
+            const innerContentContainer = activeElement.querySelector(".innerContentContainer");
 
-        if (innerContentContainer) {
-            const deleteTags = swapHashtags.delete ? swapHashtags.delete.split(" ") : [];
-            const insertTags = swapHashtags.insert ? swapHashtags.insert.split(" ") : [];
+            if (innerContentContainer) {
+                const deleteTags = swap.delete ? swap.delete.split(" ") : [];
+                const insertTags = swap.insert ? swap.insert.split(" ") : [];
 
-            for (const tag of document.activeElement.querySelectorAll(".contentTag")) {
-                const contentTagText = tag.querySelector(".contentTagText");
+                for (const tag of document.activeElement.querySelectorAll(".contentTag")) {
+                    const contentTagText = tag.querySelector(".contentTagText");
 
-                if (deleteTags.includes(contentTagText.textContent)) {
-                    tag.remove();
+                    if (deleteTags.includes(contentTagText.textContent)) {
+                        tag.remove();
+                    }
                 }
-            }
 
-            for (const tag of insertTags) {
-                innerContentContainer.append(" ");
-                innerContentContainer.append(createHashtag(tag));
-                // remove possible resulting double spaces
-                innerContentContainer.innerHTML = innerContentContainer.innerHTML.replace(
-                    /\s{2,}\<span/g,
-                    " <span"
-                );
-            }
+                for (const tag of insertTags) {
+                    innerContentContainer.append(" ");
+                    innerContentContainer.append(createHashtag(tag));
+                    // remove possible resulting double spaces
+                    innerContentContainer.innerHTML = innerContentContainer.innerHTML.replace(
+                        /\s{2,}\<span/g,
+                        " <span"
+                    );
+                }
 
-            // Reset focus to force save changes in workflowy
-            (activeElement as HTMLElement).blur();
-            (activeElement as HTMLElement).focus();
-        }
-    });
+                // Reset focus to force save changes in workflowy
+                (activeElement as HTMLElement).blur();
+                (activeElement as HTMLElement).focus();
+            }
+        });
+    }
 }

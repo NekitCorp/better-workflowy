@@ -18,14 +18,19 @@
         options.filters = [...options.filters, { hashtags: "", key: "home", specialKey: "shift" }];
     }
 
-    function removeFilter(hotkey: IStorage["filters"][0]) {
-        options.filters = options.filters.filter((h) => h !== hotkey);
+    function removeFilter(value: IStorage["filters"][0]) {
+        options.filters = options.filters.filter((h) => h !== value);
     }
 
-    function toggleSwapHashtags() {
-        options.swapHashtags = options.swapHashtags
-            ? null
-            : { insert: "", delete: "", key: "home", specialKey: "shift" };
+    function addSwap() {
+        options.swaps = [
+            ...options.swaps,
+            { insert: "", delete: "", key: "home", specialKey: "shift" },
+        ];
+    }
+
+    function removeSwap(value: IStorage["swaps"][0]) {
+        options.swaps = options.swaps.filter((sh) => sh !== value);
     }
 
     function save() {
@@ -49,7 +54,7 @@
     }
 
     .container {
-        min-width: 500px;
+        min-width: 600px;
     }
 
     table {
@@ -73,7 +78,7 @@
         background: var(--blue);
     }
 
-    .add-filter-button {
+    .add-button {
         display: block;
         margin: 0 auto;
     }
@@ -81,15 +86,6 @@
     label {
         display: flex;
         align-items: center;
-    }
-
-    .swap-hashtags-label {
-        margin: 5px 0;
-    }
-
-    .swap-hashtags-label > input {
-        flex: 1;
-        margin-left: 5px;
     }
 
     .success {
@@ -122,37 +118,46 @@
                             <td>
                                 <button
                                     class="emoji-button"
-                                    title="Remove filter"
+                                    title="Remove"
                                     on:click={() => removeFilter(filter)}>➖</button>
                             </td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
-            <button
-                class="emoji-button add-filter-button"
-                title="Add new filter"
-                on:click={addFilter}>➕</button>
+            <button class="emoji-button add-button" title="Add" on:click={addFilter}>➕</button>
         </Fieldset>
 
         <Fieldset title="Swap hashtags on hotkey">
             <div style="margin-bottom: 10px">🙋 Leave the input empty to skip action</div>
-            <label><input
-                    type="checkbox"
-                    checked={Boolean(options.swapHashtags)}
-                    on:change={toggleSwapHashtags} />Enabled</label>
-            {#if Boolean(options.swapHashtags)}
-                <label class="swap-hashtags-label">Insert hashtags:
-                    <input type="text" bind:value={options.swapHashtags.insert} /></label>
-                <label class="swap-hashtags-label">Delete hashtags:
-                    <input type="text" bind:value={options.swapHashtags.delete} /></label>
-                <div>
-                    Hotkey:
-                    <HotkeyCols
-                        bind:key={options.swapHashtags.key}
-                        bind:specialKey={options.swapHashtags.specialKey} />
-                </div>
-            {/if}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Special key</th>
+                        <th>Key</th>
+                        <th>Insert hashtags</th>
+                        <th>Delete hashtags</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each options.swaps as swap}
+                        <tr>
+                            <HotkeyCols bind:key={swap.key} bind:specialKey={swap.specialKey} />
+                            <td><input type="text" bind:value={swap.insert} /></td>
+                            <td><input type="text" bind:value={swap.delete} /></td>
+                            <td>
+                                <button
+                                    class="emoji-button"
+                                    title="Remove"
+                                    on:click={() => removeSwap(swap)}>➖</button>
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+            <button class="emoji-button add-button" title="Add" on:click={addSwap}>➕</button>
         </Fieldset>
 
         <Fieldset title="Other settings">
