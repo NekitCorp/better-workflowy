@@ -1,9 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { IStorage } from "../storage";
-    import { defaultStorage } from "../storage";
+    import type { IStorage } from "../../common/storage";
+    import { defaultStorage } from "../../common/storage";
     import Fieldset from "./Fieldset.svelte";
-    import Hotkey from "./Hotkey.svelte";
+    import HotkeyCols from "./HotkeyCols.svelte";
 
     let options: IStorage | null = null;
     let successMessage: string = null;
@@ -48,10 +48,13 @@
         --midnight-blue: #41729f;
     }
 
-    .filter-container {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
+    .container {
+        min-width: 500px;
+    }
+
+    table {
+        width: 100%;
+        text-align: center;
     }
 
     .emoji-button {
@@ -99,18 +102,33 @@
     {#if options}
         <Fieldset title="Filter by hashtags on hotkey">
             <div>🙋 Filter by one: <b>today</b></div>
-            <div>🙋 Multiple filter: <b>today 5m</b></div>
+            <div>🙋 Multiple filter: <b>today 5m important</b> <i>(space separated)</i></div>
             <div style="margin-bottom: 10px">🙋 Clear filter: <i>leave the input empty</i></div>
-            {#each options.filters as filter}
-                <div class="filter-container">
-                    <Hotkey bind:key={filter.key} bind:specialKey={filter.specialKey} />
-                    <input type="text" bind:value={filter.hashtags} />
-                    <button
-                        class="emoji-button"
-                        title="Delete filter"
-                        on:click={() => removeFilter(filter)}>➖</button>
-                </div>
-            {/each}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Special key</th>
+                        <th>Key</th>
+                        <th>Hashtags</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each options.filters as filter}
+                        <tr>
+                            <HotkeyCols bind:key={filter.key} bind:specialKey={filter.specialKey} />
+                            <td><input type="text" bind:value={filter.hashtags} /></td>
+                            <td>
+                                <button
+                                    class="emoji-button"
+                                    title="Remove filter"
+                                    on:click={() => removeFilter(filter)}>➖</button>
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
             <button
                 class="emoji-button add-filter-button"
                 title="Add new filter"
@@ -130,7 +148,7 @@
                     <input type="text" bind:value={options.swapHashtags.delete} /></label>
                 <div>
                     Hotkey:
-                    <Hotkey
+                    <HotkeyCols
                         bind:key={options.swapHashtags.key}
                         bind:specialKey={options.swapHashtags.specialKey} />
                 </div>

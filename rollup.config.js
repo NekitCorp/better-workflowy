@@ -21,7 +21,7 @@ function createConfig(filename, useSvelte = false) {
                     dev: !production,
                     // we'll extract any component CSS out into
                     // a separate file - better for performance
-                    css: css => {
+                    css: (css) => {
                         css.write(`${filename}.css`, false);
                     },
                     preprocess: sveltePreprocess(),
@@ -49,4 +49,4 @@ function createConfig(filename, useSvelte = false) {
     };
 }
 
-export default [createConfig("options", true), createConfig("content_script")];
+export default [createConfig("options", true), createConfig("content_scripts")];

@@ -1,4 +1,4 @@
-import type { IHotkey } from "./utils/keyboard-keys";
+import type { IHotkey } from "./keyboard-keys";
 
 export type IStorage = {
     /** Filter by hashtags on hotkey */

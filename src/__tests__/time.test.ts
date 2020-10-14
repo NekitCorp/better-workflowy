@@ -1,4 +1,4 @@
-import { getTagSeconds } from "../utils/time";
+import { getTagSeconds } from "../content_scripts/time";
 
 describe("time tests", () => {
     test("getTagSeconds test", () => {
