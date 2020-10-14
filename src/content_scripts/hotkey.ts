@@ -1,22 +1,8 @@
 import setHotkey from "hotkeys-js";
-import { defaultStorage, IStorage } from "./storage";
-import { createHashtag } from "./utils/dom";
-import { createObserver, highlight, renderTotalTime } from "./utils/time";
+import type { IStorage } from "../common/storage";
+import { createHashtag } from "./dom";
 
-// By default hotkeys are not enabled for INPUT, SELECT, TEXTAREA elements.
-setHotkey.filter = function (event) {
-    return true;
-};
-
-chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags }: IStorage) => {
-    // Start calculate total time
-    if (calcTotalTime) {
-        highlight();
-        renderTotalTime();
-        createObserver();
-    }
-
-    // Start filters by hotkey
+export function startFiltersOnHotkey(filters: IStorage["filters"]) {
     for (const filter of filters) {
         setHotkey(`${filter.specialKey}+${filter.key}`, function (event, handler) {
             // Prevent the default refresh event under WINDOWS system
@@ -30,10 +16,11 @@ chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags 
             }
         });
     }
+}
 
-    // Start swap hashtags on hotkey
-    if (swapHashtags) {
-        setHotkey(`${swapHashtags.specialKey}+${swapHashtags.key}`, function (event, handler) {
+export function startSwaps(swaps: IStorage["swaps"]) {
+    for (const swap of swaps) {
+        setHotkey(`${swap.specialKey}+${swap.key}`, function (event, handler) {
             // Prevent the default refresh event under WINDOWS system
             event.preventDefault();
 
@@ -41,8 +28,8 @@ chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags 
             const innerContentContainer = activeElement.querySelector(".innerContentContainer");
 
             if (innerContentContainer) {
-                const deleteTags = swapHashtags.delete ? swapHashtags.delete.split(" ") : [];
-                const insertTags = swapHashtags.insert ? swapHashtags.insert.split(" ") : [];
+                const deleteTags = swap.delete ? swap.delete.split(" ") : [];
+                const insertTags = swap.insert ? swap.insert.split(" ") : [];
 
                 for (const tag of document.activeElement.querySelectorAll(".contentTag")) {
                     const contentTagText = tag.querySelector(".contentTagText");
@@ -68,4 +55,4 @@ chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swapHashtags 
             }
         });
     }
-});
+}
