@@ -1,7 +1,7 @@
 {
     "name": "Better WorkFlowy",
     "description": "Enhance WorkFlowy",
-    "version": "1.2",
+    "version": "1.3",
     "manifest_version": 2,
     "options_ui": {
         "page": "options.html",
