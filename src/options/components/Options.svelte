@@ -30,6 +30,14 @@
         options.swaps = options.swaps.filter((sh) => sh !== value);
     }
 
+    function addColor() {
+        options.colors = [...options.colors, { hashtag: '', color: '#ff0000', background: '#ff0000' }];
+    }
+
+    function removeColor(value: IStorage['colors'][0]) {
+        options.colors = options.colors.filter((color) => color !== value);
+    }
+
     function save() {
         chrome.storage.sync.set(options, () => {
             successMessage = 'Options saved!';
@@ -64,9 +72,9 @@
                             <HotkeyCols bind:key={filter.key} bind:specialKey={filter.specialKey} />
                             <td><input type="text" bind:value={filter.hashtags} /></td>
                             <td>
-                                <button class="emoji-button" title="Remove" on:click={() => removeFilter(filter)}
-                                    >➖</button
-                                >
+                                <button class="emoji-button" title="Remove" on:click={() => removeFilter(filter)}>
+                                    ➖
+                                </button>
                             </td>
                         </tr>
                     {/each}
@@ -95,8 +103,9 @@
                             <td><input type="text" bind:value={swap.insert} /></td>
                             <td><input type="text" bind:value={swap.delete} /></td>
                             <td>
-                                <button class="emoji-button" title="Remove" on:click={() => removeSwap(swap)}>➖</button
-                                >
+                                <button class="emoji-button" title="Remove" on:click={() => removeSwap(swap)}>
+                                    ➖
+                                </button>
                             </td>
                         </tr>
                     {/each}
@@ -109,6 +118,34 @@
             <label>
                 <input type="checkbox" bind:checked={options.calcTotalTime} />Calculate total time
             </label>
+        </Fieldset>
+
+        <Fieldset title="Hashtag line color">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hashtag</th>
+                        <th>Font color</th>
+                        <th>Background color</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each options.colors as color}
+                        <tr>
+                            <td><input type="text" bind:value={color.hashtag} /></td>
+                            <td><input type="color" bind:value={color.color} /></td>
+                            <td><input type="color" bind:value={color.background} /></td>
+                            <td>
+                                <button class="emoji-button" title="Remove" on:click={() => removeColor(color)}>
+                                    ➖
+                                </button>
+                            </td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+            <button class="emoji-button add-button" title="Add" on:click={addColor}>➕</button>
         </Fieldset>
 
         <div>
@@ -135,6 +172,10 @@
     table {
         width: 100%;
         text-align: center;
+    }
+
+    table th {
+        text-decoration: underline;
     }
 
     .emoji-button {

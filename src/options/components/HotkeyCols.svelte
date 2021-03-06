@@ -1,12 +1,9 @@
 <script lang="ts">
-    import { keys, specialKeys } from "../../common/keyboard-keys";
+    import { keys, specialKeys } from '../../common/keyboard-keys';
 
-    export let key = "";
-    export let specialKey = "";
+    export let key = '';
+    export let specialKey = '';
 </script>
-
-<style>
-</style>
 
 <td>
     <select bind:value={specialKey}>
@@ -22,3 +19,6 @@
         {/each}
     </select>
 </td>
+
+<style>
+</style>
