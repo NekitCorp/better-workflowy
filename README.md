@@ -7,10 +7,11 @@ Features:
 -   [Calculate total hashtag time](#calculate-total-hashtag-time)
 -   [Filter by hashtags on hotkey](#filter-by-hashtags-on-hotkey)
 -   [Swap hashtags on hotkey](#swap-hashtags-on-hotkey)
+-   [Paint hashtag line color](#paint-hashtag-line-color)
 
 ## Extension settings
 
-![settings](https://i.gyazo.com/30540a1e6e97380bc659c5291f07e4fd.png)
+![settings](/img/settings.png)
 
 ## Features
 
@@ -39,6 +40,10 @@ Features:
 > Required option `Swap hashtags on hotkey` in extension settings
 
 ![presentation4](https://i.gyazo.com/8070f0fc6904d0a9621c7f81b7b3bcc9.gif)
+
+### Paint hashtag line color
+
+![paint-hashtag-line-color](/img/paint-hashtag-line-color.gif)
 
 ## Development
 
