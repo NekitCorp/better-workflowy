@@ -1,6 +1,11 @@
 <script lang="ts">
-    export let title: string = "";
+    export let title: string = '';
 </script>
+
+<fieldset>
+    <legend>{title}</legend>
+    <slot />
+</fieldset>
 
 <style>
     fieldset {
@@ -17,8 +22,3 @@
         padding: 2px 15px;
     }
 </style>
-
-<fieldset>
-    <legend>{title}</legend>
-    <slot />
-</fieldset>

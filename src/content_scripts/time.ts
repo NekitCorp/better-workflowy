@@ -1,30 +1,5 @@
-const HIGHLIGHT_COLOR = "#13cbd3";
-const COUNTER_ID = "cte-counter";
-
-/**
- * Observe to change tags
- */
-export function createObserver() {
-    const observer = new MutationObserver(function (mutationsList) {
-        for (const mutation of mutationsList) {
-            for (const addedNode of mutation.addedNodes) {
-                if (
-                    (addedNode as HTMLElement).classList &&
-                    (addedNode as HTMLElement).classList.contains("innerContentContainer")
-                ) {
-                    const contentTag = (addedNode as HTMLElement).querySelector(".contentTagText");
-
-                    if (contentTag) {
-                        highlight();
-                        renderTotalTime();
-                    }
-                }
-            }
-        }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-}
+const HIGHLIGHT_COLOR = '#13cbd3';
+const COUNTER_ID = 'cte-counter';
 
 /**
  * Parse and calculate total seconds from tag string
@@ -68,16 +43,14 @@ export function getTagSeconds(str: string) {
  */
 export function renderTotalTime() {
     // Try find header
-    const header = document.querySelector(".header");
+    const header = document.querySelector('.header');
 
     if (!header) {
         return;
     }
 
     // Calculate total time
-    const tags = [...document.querySelectorAll(".contentTag")].map(
-        (el: HTMLElement) => el.innerText
-    );
+    const tags = [...document.querySelectorAll('.contentTag')].map((el: HTMLElement) => el.innerText);
     let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
 
     const days = Math.floor(totalSeconds / 86400);
@@ -98,10 +71,10 @@ export function renderTotalTime() {
     const seconds = totalSeconds;
 
     const totalHtml =
-        (days > 0 ? days + "d " : "") +
-        (hours > 0 ? hours + "h " : "") +
-        (minutes > 0 ? minutes + "m " : "") +
-        (seconds > 0 ? seconds + "s" : "");
+        (days > 0 ? days + 'd ' : '') +
+        (hours > 0 ? hours + 'h ' : '') +
+        (minutes > 0 ? minutes + 'm ' : '') +
+        (seconds > 0 ? seconds + 's' : '');
 
     // Try find already added counter
     const counter = document.getElementById(COUNTER_ID);
@@ -109,23 +82,23 @@ export function renderTotalTime() {
     if (counter) {
         counter.innerHTML = totalHtml;
     } else {
-        const div = document.createElement("div");
+        const div = document.createElement('div');
 
         div.innerHTML = totalHtml;
         div.id = COUNTER_ID;
-        div.style.fontSize = 13 + "px";
-        div.style.marginRight = 10 + "px";
+        div.style.fontSize = 13 + 'px';
+        div.style.marginRight = 10 + 'px';
 
-        const breadcrumbs = header.querySelector(".breadcrumbs");
+        const breadcrumbs = header.querySelector('.breadcrumbs');
         header.insertBefore(div, breadcrumbs.nextSibling);
     }
 }
 
 /**
- * Highlight recognized tags
+ * Highlight recognized time tags
  */
-export function highlight() {
-    const tags = document.querySelectorAll(".contentTag");
+export function highlightTimeHashtag() {
+    const tags = document.querySelectorAll('.contentTag');
 
     for (const tag of tags) {
         if (getTagSeconds((tag as HTMLElement).innerText) > 0) {

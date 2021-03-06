@@ -1,20 +1,26 @@
-import setHotkey from "hotkeys-js";
-import { defaultStorage, IStorage } from "./common/storage";
-import { startFiltersOnHotkey, startSwaps } from "./content_scripts/hotkey";
-import { createObserver, highlight, renderTotalTime } from "./content_scripts/time";
+import setHotkey from 'hotkeys-js';
+import { defaultStorage, IStorage } from './common/storage';
+import { paintColorHashtagLine } from './content_scripts/color';
+import { startFiltersOnHotkey, startSwaps } from './content_scripts/hotkey';
+import { trackHashtagChange } from './content_scripts/observer';
+import { highlightTimeHashtag, renderTotalTime } from './content_scripts/time';
 
 // By default hotkeys are not enabled for INPUT, SELECT, TEXTAREA elements.
 setHotkey.filter = function (event) {
     return true;
 };
 
-chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swaps }: IStorage) => {
-    // Start calculate total time
+chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swaps, colors }: IStorage) => {
     if (calcTotalTime) {
-        highlight();
+        highlightTimeHashtag();
         renderTotalTime();
-        createObserver();
     }
+
+    trackHashtagChange(
+        calcTotalTime
+            ? [highlightTimeHashtag, renderTotalTime, (container) => paintColorHashtagLine(container, colors)]
+            : [(container) => paintColorHashtagLine(container, colors)],
+    );
 
     startFiltersOnHotkey(filters);
     startSwaps(swaps);
