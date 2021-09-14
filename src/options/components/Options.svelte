@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { IStorage } from '../../common/storage';
-    import { defaultStorage } from '../../common/storage';
+    import { readStorage, writeStorage } from '../../common/storage';
     import Fieldset from './Fieldset.svelte';
     import HotkeyCols from './HotkeyCols.svelte';
 
@@ -9,8 +9,8 @@
     let successMessage: string = null;
 
     onMount(() => {
-        chrome.storage.sync.get(defaultStorage, (res: IStorage) => {
-            options = res;
+        readStorage((data) => {
+            options = data;
         });
     });
 
@@ -39,7 +39,7 @@
     }
 
     function save() {
-        chrome.storage.sync.set(options, () => {
+        writeStorage(options, () => {
             successMessage = 'Options saved!';
             console.log(options);
 

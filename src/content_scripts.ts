@@ -1,5 +1,5 @@
 import setHotkey from 'hotkeys-js';
-import { defaultStorage, IStorage } from './common/storage';
+import { readStorage } from './common/storage';
 import { paintColorHashtagLine } from './content_scripts/color';
 import { startFiltersOnHotkey, startSwaps } from './content_scripts/hotkey';
 import { trackHashtagChange } from './content_scripts/observer';
@@ -10,7 +10,7 @@ setHotkey.filter = function (event) {
     return true;
 };
 
-chrome.storage.sync.get(defaultStorage, ({ filters, calcTotalTime, swaps, colors }: IStorage) => {
+readStorage(({ filters, calcTotalTime, swaps, colors }) => {
     if (calcTotalTime) {
         highlightTimeHashtag();
         renderTotalTime();

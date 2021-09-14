@@ -18,9 +18,22 @@ export type IStorage = {
     }[];
 };
 
-export const defaultStorage: IStorage = {
+const defaultStorage: IStorage = {
     filters: [],
     calcTotalTime: true,
     swaps: [],
     colors: [],
 };
+
+export function readStorage(callback: (data: IStorage) => void): void {
+    // for backward compatibility
+    chrome.storage.sync.get(null, (syncData) => {
+        chrome.storage.local.get(null, (localData) => {
+            callback({ ...defaultStorage, ...syncData, ...localData });
+        });
+    });
+}
+
+export function writeStorage(data: IStorage, callback: () => void): void {
+    chrome.storage.local.set(data, callback);
+}
