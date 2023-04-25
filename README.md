@@ -11,7 +11,7 @@ Features:
 
 ## Extension settings
 
-![settings](/img/settings.png)
+![settings](/docs/img/settings.png)
 
 ## Features
 
@@ -43,7 +43,7 @@ Features:
 
 ### Paint hashtag line color
 
-![paint-hashtag-line-color](/img/paint-hashtag-line-color.gif)
+![paint-hashtag-line-color](/docs/img/paint-hashtag-line-color.gif)
 
 ## Development
 

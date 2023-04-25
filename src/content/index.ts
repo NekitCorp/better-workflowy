@@ -1,9 +1,9 @@
 import setHotkey from 'hotkeys-js';
-import { readStorage } from './common/storage';
-import { paintColorHashtagLine } from './content_scripts/color';
-import { startFiltersOnHotkey, startSwaps } from './content_scripts/hotkey';
-import { trackHashtagChange } from './content_scripts/observer';
-import { highlightTimeHashtag, renderTotalTime } from './content_scripts/time';
+import { readStorage } from '../common/storage';
+import { paintColorHashtagLine } from './color';
+import { startFiltersOnHotkey, startSwaps } from './hotkey';
+import { trackHashtagChange } from './observer';
+import { highlightTimeHashtag, renderTotalTime } from './time';
 
 // By default hotkeys are not enabled for INPUT, SELECT, TEXTAREA elements.
 setHotkey.filter = function (event) {
