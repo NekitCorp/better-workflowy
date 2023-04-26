@@ -1,9 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { KEYS, SPECIAL_KEYS } from '../../common/keyboard-keys';
     import type { IStorage } from '../../common/storage';
     import { readStorage, writeStorage } from '../../common/storage';
+    import Button from './Button.svelte';
     import Fieldset from './Fieldset.svelte';
-    import HotkeyCols from './HotkeyCols.svelte';
+    import Select from './Select.svelte';
 
     let options: IStorage | null = null;
     let successMessage: string = null;
@@ -23,7 +25,10 @@
     }
 
     function addSwap() {
-        options.swaps = [...options.swaps, { insert: '', delete: '', key: 'home', specialKey: 'shift' }];
+        options.swaps = [
+            ...options.swaps,
+            { insert: '', delete: '', key: 'home', specialKey: 'shift' },
+        ];
     }
 
     function removeSwap(value: IStorage['swaps'][0]) {
@@ -31,7 +36,10 @@
     }
 
     function addColor() {
-        options.colors = [...options.colors, { hashtag: '', color: '#ff0000', background: '#ff0000' }];
+        options.colors = [
+            ...options.colors,
+            { hashtag: '', color: '#ff0000', background: '#ff0000' },
+        ];
     }
 
     function removeColor(value: IStorage['colors'][0]) {
@@ -52,7 +60,7 @@
 
 <div class="container">
     {#if options}
-        <Fieldset title="Filter by hashtags on hotkey">
+        <Fieldset title="🔍 Filter by hashtags on hotkey">
             <div>🙋 Filter by one: <b>today</b></div>
             <div>🙋 Multiple filter: <b>today 5m important</b> <i>(space separated)</i></div>
             <div style="margin-bottom: 10px">🙋 Clear filter: <i>leave the input empty</i></div>
@@ -69,21 +77,28 @@
                 <tbody>
                     {#each options.filters as filter}
                         <tr>
-                            <HotkeyCols bind:key={filter.key} bind:specialKey={filter.specialKey} />
+                            <td>
+                                <Select bind:value={filter.specialKey} options={SPECIAL_KEYS} />
+                            </td>
+                            <td>
+                                <Select bind:value={filter.key} options={KEYS} />
+                            </td>
                             <td><input type="text" bind:value={filter.hashtags} /></td>
                             <td>
-                                <button class="emoji-button" title="Remove" on:click={() => removeFilter(filter)}>
-                                    ➖
-                                </button>
+                                <Button
+                                    title="Remove"
+                                    variant="emoji"
+                                    on:click={() => removeFilter(filter)}>➖</Button
+                                >
                             </td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
-            <button class="emoji-button add-button" title="Add" on:click={addFilter}>➕</button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addFilter}>➕</Button>
         </Fieldset>
 
-        <Fieldset title="Swap hashtags on hotkey">
+        <Fieldset title="🔀 Swap hashtags on hotkey">
             <div style="margin-bottom: 10px">🙋 Leave the input empty to skip action</div>
 
             <table>
@@ -99,28 +114,35 @@
                 <tbody>
                     {#each options.swaps as swap}
                         <tr>
-                            <HotkeyCols bind:key={swap.key} bind:specialKey={swap.specialKey} />
+                            <td>
+                                <Select bind:value={swap.specialKey} options={SPECIAL_KEYS} />
+                            </td>
+                            <td>
+                                <Select bind:value={swap.key} options={KEYS} />
+                            </td>
                             <td><input type="text" bind:value={swap.insert} /></td>
                             <td><input type="text" bind:value={swap.delete} /></td>
                             <td>
-                                <button class="emoji-button" title="Remove" on:click={() => removeSwap(swap)}>
-                                    ➖
-                                </button>
+                                <Button
+                                    title="Remove"
+                                    variant="emoji"
+                                    on:click={() => removeSwap(swap)}>➖</Button
+                                >
                             </td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
-            <button class="emoji-button add-button" title="Add" on:click={addSwap}>➕</button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addSwap}>➕</Button>
         </Fieldset>
 
-        <Fieldset title="Other settings">
+        <Fieldset title="⚙️ Other settings">
             <label>
                 <input type="checkbox" bind:checked={options.calcTotalTime} />Calculate total time
             </label>
         </Fieldset>
 
-        <Fieldset title="Hashtag line color">
+        <Fieldset title="🎨 Hashtag line color">
             <table>
                 <thead>
                     <tr>
@@ -137,19 +159,21 @@
                             <td><input type="color" bind:value={color.color} /></td>
                             <td><input type="color" bind:value={color.background} /></td>
                             <td>
-                                <button class="emoji-button" title="Remove" on:click={() => removeColor(color)}>
-                                    ➖
-                                </button>
+                                <Button
+                                    title="Remove"
+                                    variant="emoji"
+                                    on:click={() => removeColor(color)}>➖</Button
+                                >
                             </td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
-            <button class="emoji-button add-button" title="Add" on:click={addColor}>➕</button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addColor}>➕</Button>
         </Fieldset>
 
         <div>
-            <button on:click={save}>Save</button>
+            <Button on:click={save}>Save</Button>
             {#if successMessage}<span class="success">{successMessage}</span>{/if}
         </div>
     {:else}
@@ -158,13 +182,6 @@
 </div>
 
 <style>
-    :root {
-        --blue: #c3e0e5;
-        --dark-blue: #274472;
-        --blue-gray: #5885af;
-        --midnight-blue: #41729f;
-    }
-
     .container {
         min-width: 600px;
     }
@@ -172,30 +189,18 @@
     table {
         width: 100%;
         text-align: center;
+        border-collapse: collapse;
+        margin-bottom: 4px;
     }
 
+    table td,
     table th {
-        text-decoration: underline;
+        border: 1px solid var(--button-border-color);
+        padding: 4px 8px;
     }
 
-    .emoji-button {
-        border: none;
-        background: transparent;
-        box-shadow: none;
-        border-radius: 50%;
-        padding: 0;
-        width: 25px;
-        height: 25px;
-        min-width: auto;
-        cursor: pointer;
-    }
-
-    .emoji-button:hover {
-        background: var(--blue);
-    }
-
-    .add-button {
-        display: block;
+    .container :global(.add-button) {
+        display: flex;
         margin: 0 auto;
     }
 
