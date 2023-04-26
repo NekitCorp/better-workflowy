@@ -1,8 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { KEYS, SPECIAL_KEYS } from '../../common/keyboard-keys';
-    import type { IStorage } from '../../common/storage';
-    import { readStorage, writeStorage } from '../../common/storage';
+    import { KEYS, SPECIAL_KEYS } from '../../modules/hotkeys/const';
+    import { storage } from '../../modules/storage';
     import Button from './Button.svelte';
     import Fieldset from './Fieldset.svelte';
     import Select from './Select.svelte';
@@ -11,7 +10,7 @@
     let successMessage: string = null;
 
     onMount(() => {
-        readStorage((data) => {
+        storage.readStorage((data) => {
             options = data;
         });
     });
@@ -47,7 +46,7 @@
     }
 
     function save() {
-        writeStorage(options, () => {
+        storage.writeStorage(options, () => {
             successMessage = 'Options saved!';
             console.log(options);
 
