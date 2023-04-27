@@ -1,3 +1,5 @@
+import { getTagSeconds } from './utils';
+
 export class TimeManager implements ITimeManager {
     private HIGHLIGHT_COLOR = '#13cbd3';
     private COUNTER_ID = 'cte-counter';
@@ -26,7 +28,7 @@ export class TimeManager implements ITimeManager {
         const tags = [...document.querySelectorAll('.contentTag')].map(
             (el: HTMLElement) => el.innerText,
         );
-        let totalSeconds = tags.reduce((acc, val) => acc + this.getTagSeconds(val), 0);
+        let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
 
         const days = Math.floor(totalSeconds / 86400);
         if (days > 0) {
@@ -76,46 +78,9 @@ export class TimeManager implements ITimeManager {
         const tags = document.querySelectorAll('.contentTag');
 
         for (const tag of tags) {
-            if (this.getTagSeconds((tag as HTMLElement).innerText) > 0) {
+            if (getTagSeconds((tag as HTMLElement).innerText) > 0) {
                 (tag as HTMLElement).style.outline = `1px dashed ${this.HIGHLIGHT_COLOR}`;
             }
         }
     };
-
-    /**
-     * Parse and calculate total seconds from tag string
-     * @example "#2h20m" -> 8400
-     */
-    private getTagSeconds(str: string) {
-        // Test to fit string
-        const regExp = /^#(\d+(d|h|m|s))+$/;
-        if (!regExp.test(str)) {
-            return 0;
-        }
-
-        let totalSeconds = 0;
-
-        const days = str.match(/(\d+)\s*d/);
-        const hours = str.match(/(\d+)\s*h/);
-        const minutes = str.match(/(\d+)\s*m/);
-        const seconds = str.match(/(\d+)\s*s/);
-
-        if (days) {
-            totalSeconds += parseInt(days[1]) * 86400;
-        }
-
-        if (hours) {
-            totalSeconds += parseInt(hours[1]) * 3600;
-        }
-
-        if (minutes) {
-            totalSeconds += parseInt(minutes[1]) * 60;
-        }
-
-        if (seconds) {
-            totalSeconds += parseInt(seconds[1]);
-        }
-
-        return totalSeconds;
-    }
 }
