@@ -1,4 +1,5 @@
 interface IDomManager {
+    loadingApp(): Promise<void>;
+    subscribe(callback: (node: HTMLElement) => void): void;
     createHashtag(text: string): HTMLSpanElement;
-    trackHashtagChange(callbacks: ((container: HTMLElement) => void)[]): void;
 }

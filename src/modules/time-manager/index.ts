@@ -2,25 +2,57 @@ import { getTagSeconds } from './utils';
 
 export class TimeManager implements ITimeManager {
     private HIGHLIGHT_COLOR = '#13cbd3';
-    private COUNTER_ID = 'cte-counter';
+    private COUNTER_ID = 'bw-time-counter';
+    private timeCounterElement: HTMLDivElement | null = null;
 
-    constructor(private calcTotalTime: boolean) {}
+    constructor(private calcTotalTime: boolean, private domManager: IDomManager) {}
 
     public init() {
         if (this.calcTotalTime) {
+            this.createTimeCounterElement();
             this.highlightTimeHashtag();
             this.renderTotalTime();
+
+            this.domManager.subscribe(this.highlightTimeHashtag);
+            this.domManager.subscribe(this.renderTotalTime);
         }
+    }
+
+    private createTimeCounterElement() {
+        // Try find already added counter
+        const counter = document.getElementById(this.COUNTER_ID);
+
+        if (counter instanceof HTMLDivElement) {
+            this.timeCounterElement = counter;
+            return;
+        }
+
+        // Try find header
+        const header = document.querySelector('.header');
+        const breadcrumbs = header.querySelector('.breadcrumbs');
+
+        if (!header || !breadcrumbs) {
+            console.error(`[Better WorkFlowy] Elements not found: ".header" or ".breadcrumbs".`);
+            return;
+        }
+
+        // Create counter div element
+        const div = document.createElement('div');
+
+        div.id = this.COUNTER_ID;
+        div.style.fontSize = 13 + 'px';
+        div.style.marginRight = 10 + 'px';
+
+        header.insertBefore(div, breadcrumbs.nextSibling);
+
+        this.timeCounterElement = div;
     }
 
     /**
      * Render total recognized time in header
      */
-    public renderTotalTime = () => {
-        // Try find header
-        const header = document.querySelector('.header');
-
-        if (!header) {
+    private renderTotalTime = () => {
+        if (this.timeCounterElement === null) {
             return;
         }
 
@@ -53,28 +85,13 @@ export class TimeManager implements ITimeManager {
             (minutes > 0 ? minutes + 'm ' : '') +
             (seconds > 0 ? seconds + 's' : '');
 
-        // Try find already added counter
-        const counter = document.getElementById(this.COUNTER_ID);
-
-        if (counter) {
-            counter.innerHTML = totalHtml;
-        } else {
-            const div = document.createElement('div');
-
-            div.innerHTML = totalHtml;
-            div.id = this.COUNTER_ID;
-            div.style.fontSize = 13 + 'px';
-            div.style.marginRight = 10 + 'px';
-
-            const breadcrumbs = header.querySelector('.breadcrumbs');
-            header.insertBefore(div, breadcrumbs.nextSibling);
-        }
+        this.timeCounterElement.innerHTML = totalHtml;
     };
 
     /**
      * Highlight recognized time tags
      */
-    public highlightTimeHashtag = () => {
+    private highlightTimeHashtag = () => {
         const tags = document.querySelectorAll('.contentTag');
 
         for (const tag of tags) {

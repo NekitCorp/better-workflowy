@@ -1,6 +1,6 @@
 import hotkeys from 'hotkeys-js';
 
-class HotkeysManager implements IHotkeysManager {
+export class HotkeysManager implements IHotkeysManager {
     constructor() {
         // By default hotkeys are not enabled for INPUT, SELECT, TEXTAREA elements.
         hotkeys.filter = function (event) {
@@ -17,5 +17,3 @@ class HotkeysManager implements IHotkeysManager {
         });
     }
 }
-
-export const hotkeysManager = new HotkeysManager();

@@ -27,8 +27,16 @@ export default defineManifest(async (env) => ({
     },
     content_scripts: [
         {
-            matches: ['*://www.workflowy.com/*', '*://workflowy.com/*'],
+            matches: [
+                '*://www.workflowy.com/*',
+                '*://workflowy.com/*',
+                // For e2e tests
+                'file:///*/workflowy.html',
+            ],
             js: ['src/content/index.ts'],
         },
     ],
+    background: {
+        service_worker: 'src/background/index.ts',
+    },
 }));

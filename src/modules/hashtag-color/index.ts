@@ -1,7 +1,11 @@
 export class HashtagColor {
-    constructor(private colors: IStorage['colors']) {}
+    constructor(private colors: IStorage['colors'], private domManager: IDomManager) {}
 
-    paintColorHashtagLine = (container: HTMLElement) => {
+    public init() {
+        this.domManager.subscribe(this.paintColorHashtagLine);
+    }
+
+    private paintColorHashtagLine = (container: HTMLElement) => {
         const tags = container.querySelectorAll<HTMLElement>('.contentTag');
 
         for (const tag of tags) {

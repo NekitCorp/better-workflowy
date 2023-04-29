@@ -1,5 +1,7 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig, defaultExclude } from 'vitest/config';
 
 export default defineConfig({
-    test: {},
+    test: {
+        exclude: [...defaultExclude, 'src/e2e/*'],
+    },
 });

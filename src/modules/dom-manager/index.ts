@@ -1,4 +1,25 @@
-class DomManager implements IDomManager {
+const PAGE_ELEMENT_CLASS_NAME = 'page';
+const CONTENT_ROW_ELEMENT_CLASS_NAME = 'innerContentContainer';
+const TAG_ELEMENT_TEXT_CLASS_NAME = 'contentTagText';
+
+export class DomManager implements IDomManager {
+    private resolveLoadingPromise: (() => void) | null = null;
+    private subscribers: ((node: HTMLElement) => void)[] = [];
+
+    constructor() {
+        this.observe();
+    }
+
+    public loadingApp(): Promise<void> {
+        return new Promise((res) => {
+            if (document.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)) {
+                return res();
+            } else {
+                this.resolveLoadingPromise = res;
+            }
+        });
+    }
+
     // <span class="contentTag" title="Filter #text">
     //     #
     //     <span class="contentTagText">text</span>
@@ -23,21 +44,33 @@ class DomManager implements IDomManager {
         return container;
     }
 
-    /** Create `MutationObserver` to track element with class `.contentTagText` changes */
-    public trackHashtagChange(callbacks: Array<(container: HTMLElement) => void>) {
-        const observer = new MutationObserver(function (mutationsList) {
-            for (const mutation of mutationsList) {
-                for (const addedNode of mutation.addedNodes) {
+    public subscribe(callback: (node: HTMLElement) => void) {
+        this.subscribers.push(callback);
+    }
+
+    private observe() {
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                for (const node of mutation.addedNodes) {
+                    if (!(node instanceof HTMLElement)) continue;
+
+                    // Detect app load
                     if (
-                        (addedNode as HTMLElement).classList &&
-                        (addedNode as HTMLElement).classList.contains('innerContentContainer')
+                        node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
+                        node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)
                     ) {
-                        const contentTag = (addedNode as HTMLElement).querySelector(
-                            '.contentTagText',
-                        );
+                        if (this.resolveLoadingPromise) {
+                            this.resolveLoadingPromise();
+                            this.resolveLoadingPromise = null;
+                        }
+                    }
+
+                    // Detect any changes on content rows with hashtags
+                    if (node.classList.contains(CONTENT_ROW_ELEMENT_CLASS_NAME)) {
+                        const contentTag = node.querySelector(`.${TAG_ELEMENT_TEXT_CLASS_NAME}`);
 
                         if (contentTag) {
-                            callbacks.forEach((c) => c(addedNode as HTMLElement));
+                            this.subscribers.forEach((c) => c(node));
                         }
                     }
                 }
@@ -47,5 +80,3 @@ class DomManager implements IDomManager {
         observer.observe(document.body, { childList: true, subtree: true });
     }
 }
-
-export const domManager = new DomManager();
