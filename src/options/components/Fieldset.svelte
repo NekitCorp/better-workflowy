@@ -11,7 +11,6 @@
     fieldset {
         border-radius: 5px;
         border: 1px solid var(--button-border-color);
-        margin-bottom: 10px;
     }
 
     legend {

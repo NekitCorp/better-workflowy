@@ -1,4 +1,4 @@
-name: Test itself
+name: Test
 
 on:
     pull_request:
@@ -19,3 +19,5 @@ jobs:
             - run: yarn
             # Test
             - run: yarn test
+            # Build
+            - run: yarn build

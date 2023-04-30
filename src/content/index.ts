@@ -1,7 +1,7 @@
 import { DomManager } from '../modules/dom-manager';
 import { HashtagColor } from '../modules/hashtag-color';
-import { HashtagFilter } from '../modules/hashtag-filter';
 import { HashtagSwap } from '../modules/hashtag-swap';
+import { HotkeySearch } from '../modules/hotkey-search';
 import { HotkeysManager } from '../modules/hotkeys';
 import { storage } from '../modules/storage';
 import { TimeManager } from '../modules/time-manager';
@@ -16,7 +16,7 @@ domManager.loadingApp().then(() => {
 
         new TimeManager(data.calcTotalTime, domManager).init();
         new HashtagColor(data.colors, domManager).init();
-        new HashtagFilter(data.filters, hotkeysManager).init();
+        new HotkeySearch(data.search, hotkeysManager).init();
         new HashtagSwap(data.swaps, hotkeysManager, domManager).init();
     });
 });

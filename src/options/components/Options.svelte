@@ -7,7 +7,7 @@
     import Select from './Select.svelte';
 
     let options: IStorage | null = null;
-    let successMessage: string = null;
+    let saveButtonText = 'Save';
 
     onMount(() => {
         storage.readStorage((data) => {
@@ -15,12 +15,12 @@
         });
     });
 
-    function addFilter() {
-        options.filters = [...options.filters, { hashtags: '', key: 'home', specialKey: 'shift' }];
+    function addSearch() {
+        options.search = [...options.search, { value: '', key: 'home', specialKey: 'shift' }];
     }
 
-    function removeFilter(value: IStorage['filters'][0]) {
-        options.filters = options.filters.filter((h) => h !== value);
+    function removeSearch(value: IStorage['search'][0]) {
+        options.search = options.search.filter((h) => h !== value);
     }
 
     function addSwap() {
@@ -47,11 +47,10 @@
 
     function save() {
         storage.writeStorage(options, () => {
-            successMessage = 'Options saved!';
-            console.log(options);
+            saveButtonText = '✅ Saved!';
 
             setTimeout(() => {
-                successMessage = null;
+                saveButtonText = 'Save';
             }, 1500);
         });
     }
@@ -59,42 +58,43 @@
 
 <div class="container">
     {#if options}
-        <Fieldset title="🔍 Filter by hashtags on hotkey">
-            <div>🙋 Filter by one: <b>today</b></div>
-            <div>🙋 Multiple filter: <b>today 5m important</b> <i>(space separated)</i></div>
-            <div style="margin-bottom: 10px">🙋 Clear filter: <i>leave the input empty</i></div>
+        <Fieldset title="🔍 Hotkey search">
+            <div>🙋 Search by text: <b>products</b></div>
+            <div>🙋 Single hashtag search: <b>#today</b></div>
+            <div>🙋 Multiple hashtag search: <b>#today #5m #important</b></div>
+            <div style="margin-bottom: 10px">🙋 Clear search: <i>leave the input empty</i></div>
 
             <table>
                 <thead>
                     <tr>
                         <th>Special key</th>
                         <th>Key</th>
-                        <th>Hashtags</th>
+                        <th>Search</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {#each options.filters as filter}
+                    {#each options.search as item}
                         <tr>
                             <td>
-                                <Select bind:value={filter.specialKey} options={SPECIAL_KEYS} />
+                                <Select bind:value={item.specialKey} options={SPECIAL_KEYS} />
                             </td>
                             <td>
-                                <Select bind:value={filter.key} options={KEYS} />
+                                <Select bind:value={item.key} options={KEYS} />
                             </td>
-                            <td><input type="text" bind:value={filter.hashtags} /></td>
+                            <td><input type="text" bind:value={item.value} /></td>
                             <td>
                                 <Button
                                     title="Remove"
                                     variant="emoji"
-                                    on:click={() => removeFilter(filter)}>➖</Button
+                                    on:click={() => removeSearch(item)}>➖</Button
                                 >
                             </td>
                         </tr>
                     {/each}
                 </tbody>
             </table>
-            <Button class="add-button" title="Add" variant="emoji" on:click={addFilter}>➕</Button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addSearch}>➕</Button>
         </Fieldset>
 
         <Fieldset title="🔀 Swap hashtags on hotkey">
@@ -171,9 +171,8 @@
             <Button class="add-button" title="Add" variant="emoji" on:click={addColor}>➕</Button>
         </Fieldset>
 
-        <div>
-            <Button on:click={save}>Save</Button>
-            {#if successMessage}<span class="success">{successMessage}</span>{/if}
+        <div class="footer">
+            <Button on:click={save}>{saveButtonText}</Button>
         </div>
     {:else}
         <p>Loading...</p>
@@ -182,7 +181,10 @@
 
 <style>
     .container {
+        position: relative;
         min-width: 600px;
+        display: grid;
+        gap: 10px;
     }
 
     table {
@@ -208,8 +210,12 @@
         align-items: center;
     }
 
-    .success {
-        color: green;
-        font-weight: bold;
+    .footer {
+        position: sticky;
+        bottom: 0;
+        background-color: var(--background-color);
+        padding: 10px 8px;
+        margin: 0 -8px -8px -8px;
+        border-top: 1px solid var(--button-border-color);
     }
 </style>

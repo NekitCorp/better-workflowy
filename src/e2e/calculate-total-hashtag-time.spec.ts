@@ -17,7 +17,7 @@ test.describe('Calculate total hashtag time', () => {
                 const storage: IStorage = {
                     calcTotalTime: true,
                     colors: [],
-                    filters: [],
+                    search: [],
                     swaps: [],
                 };
 
@@ -54,7 +54,7 @@ test.describe('Calculate total hashtag time', () => {
                 const storage: IStorage = {
                     calcTotalTime: false,
                     colors: [],
-                    filters: [],
+                    search: [],
                     swaps: [],
                 };
 

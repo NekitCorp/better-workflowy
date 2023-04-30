@@ -4,8 +4,8 @@ type IHotkey = {
 };
 
 type IStorage = {
-    /** Filter by hashtags on hotkey */
-    filters: Array<IHotkey & { hashtags: string }>;
+    /** Search on hotkey */
+    search: Array<IHotkey & { value: string }>;
 
     /** Calculate total hashtags time */
     calcTotalTime: boolean;

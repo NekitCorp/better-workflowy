@@ -20,7 +20,7 @@ export default defineManifest(async (env) => ({
         '48': 'src/assets/icons/icon48.png',
         '128': 'src/assets/icons/icon128.png',
     },
-    permissions: ['storage'] as chrome.runtime.ManifestPermissions[],
+    permissions: ['storage', 'scripting'] as chrome.runtime.ManifestPermissions[],
     options_ui: {
         page: 'src/options/options.html',
         open_in_tab: false,
@@ -35,6 +35,12 @@ export default defineManifest(async (env) => ({
             ],
             js: ['src/content/index.ts'],
         },
+    ],
+    host_permissions: [
+        '*://www.workflowy.com/*',
+        '*://workflowy.com/*',
+        // For e2e tests
+        'file:///*/workflowy.html',
     ],
     background: {
         service_worker: 'src/background/index.ts',

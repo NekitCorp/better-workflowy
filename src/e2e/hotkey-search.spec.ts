@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const HTML_PATH = path.join(__dirname, './workflowy.html');
 
-test.describe('Filter by hashtags on hotkey', () => {
+test.describe('Hotkey search', () => {
     test.describe('Option enabled', () => {
         test.beforeEach(async ({ page, extensionId }) => {
             await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
@@ -14,10 +14,11 @@ test.describe('Filter by hashtags on hotkey', () => {
                 const storage: IStorage = {
                     calcTotalTime: true,
                     colors: [],
-                    filters: [
-                        { specialKey: 'shift', key: '1', hashtags: 'today' },
-                        { specialKey: 'shift', key: '2', hashtags: '5m tomorrow' },
-                        { specialKey: 'shift', key: '3', hashtags: '' },
+                    search: [
+                        { specialKey: 'shift', key: '1', value: '#today' },
+                        { specialKey: 'shift', key: '2', value: '#tomorrow #5m' },
+                        { specialKey: 'shift', key: '3', value: 'common' },
+                        { specialKey: 'shift', key: '4', value: '' },
                     ],
                     swaps: [],
                 };
@@ -27,24 +28,26 @@ test.describe('Filter by hashtags on hotkey', () => {
             await page.goto(`file://${HTML_PATH}`);
         });
 
-        test('Check change url query on hotkey', async ({ page }) => {
-            let url = new URL(page.url());
-            expect(url.hash).toBe('');
+        test('Check change input value on hotkey', async ({ page, headless }) => {
+            // test.skip(headless, 'This feature is not implemented for headless browsers.');
+
+            await expect(page.locator('#srch-input')).toHaveValue('');
 
             await page.keyboard.press('Shift+1');
 
-            url = new URL(page.url());
-            expect(decodeURIComponent(decodeURIComponent(url.hash))).toBe('#?q=#today ');
+            await expect(page.locator('#srch-input')).toHaveValue('#today');
 
             await page.keyboard.press('Shift+2');
 
-            url = new URL(page.url());
-            expect(decodeURIComponent(decodeURIComponent(url.hash))).toBe('#?q=#5m #tomorrow ');
+            await expect(page.locator('#srch-input')).toHaveValue('#tomorrow #5m');
 
             await page.keyboard.press('Shift+3');
 
-            url = new URL(page.url());
-            expect(url.hash).toBe('');
+            await expect(page.locator('#srch-input')).toHaveValue('common');
+
+            await page.keyboard.press('Shift+4');
+
+            await expect(page.locator('#srch-input')).toHaveValue('');
         });
     });
 });
