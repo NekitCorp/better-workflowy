@@ -20,7 +20,7 @@ export class DomManager implements IDomManager {
         });
     }
 
-    // <span class="contentTag" title="Filter #text">
+    // <span class="contentTag" title="Filter #text" data-val="#text">
     //     #
     //     <span class="contentTagText">text</span>
     //     <span class="contentTagNub" />
@@ -29,6 +29,7 @@ export class DomManager implements IDomManager {
         const container = document.createElement('span');
         container.className = 'contentTag';
         container.title = `Filter #${text}`;
+        container.dataset.val = `#${text}`;
         container.append('#');
 
         const contentTagText = document.createElement('span');

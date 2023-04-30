@@ -4,6 +4,7 @@
     import { storage } from '../../modules/storage';
     import Button from './Button.svelte';
     import Fieldset from './Fieldset.svelte';
+    import HashtagsPreview from './HashtagsPreview.svelte';
     import Select from './Select.svelte';
 
     let options: IStorage | null = null;
@@ -54,6 +55,8 @@
             }, 1500);
         });
     }
+
+    $: console.log(options);
 </script>
 
 <div class="container">
@@ -98,6 +101,8 @@
         </Fieldset>
 
         <Fieldset title="🔀 Swap hashtags on hotkey">
+            <div>🙋 Enter the hashtag name without <b>#</b></div>
+            <div>🙋 To specify multiple hashtags, separate them with a space</div>
             <div style="margin-bottom: 10px">🙋 Leave the input empty to skip action</div>
 
             <table>
@@ -119,8 +124,18 @@
                             <td>
                                 <Select bind:value={swap.key} options={KEYS} />
                             </td>
-                            <td><input type="text" bind:value={swap.insert} /></td>
-                            <td><input type="text" bind:value={swap.delete} /></td>
+                            <td>
+                                <div class="previewInput">
+                                    <input type="text" bind:value={swap.insert} />
+                                    <HashtagsPreview bind:value={swap.insert} />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="previewInput">
+                                    <input type="text" bind:value={swap.delete} />
+                                    <HashtagsPreview bind:value={swap.delete} />
+                                </div>
+                            </td>
                             <td>
                                 <Button
                                     title="Remove"
@@ -194,6 +209,11 @@
         margin-bottom: 4px;
     }
 
+    thead > tr > th:last-child {
+        /* Width by content */
+        width: 1%;
+    }
+
     table td,
     table th {
         border: 1px solid var(--button-border-color);
@@ -208,6 +228,11 @@
     label {
         display: flex;
         align-items: center;
+    }
+
+    .previewInput {
+        display: grid;
+        gap: 4px;
     }
 
     .footer {
