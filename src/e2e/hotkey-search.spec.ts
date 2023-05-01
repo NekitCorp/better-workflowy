@@ -11,7 +11,7 @@ test.describe('Hotkey search', () => {
         await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
         await page.evaluate(() => {
             const storage: IStorage = {
-                calcTotalTime: true,
+                time: { enabled: false, format: 'd' },
                 colors: [],
                 search: [
                     { specialKey: 'shift', key: '1', value: '#today' },

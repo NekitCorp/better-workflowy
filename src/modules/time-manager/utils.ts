@@ -34,3 +34,27 @@ export function getTagSeconds(str: string) {
 
     return totalSeconds;
 }
+
+export function formatTime(seconds: number, format: FormatTime): string {
+    const days = format === 'd' ? Math.floor(seconds / 86400) : 0;
+    if (days > 0) {
+        seconds -= days * 86400;
+    }
+
+    const hours = ['d', 'h'].includes(format) ? Math.floor(seconds / 3600) : 0;
+    if (hours > 0) {
+        seconds -= hours * 3600;
+    }
+
+    const minutes = ['d', 'h', 'm'].includes(format) ? Math.floor(seconds / 60) : 0;
+    if (minutes > 0) {
+        seconds -= minutes * 60;
+    }
+
+    return (
+        (days > 0 ? ` ${days}d` : '') +
+        (hours > 0 ? ` ${hours}h` : '') +
+        (minutes > 0 ? ` ${minutes}m` : '') +
+        (seconds > 0 ? ` ${seconds}s` : '')
+    );
+}

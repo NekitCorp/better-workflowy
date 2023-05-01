@@ -1,7 +1,10 @@
 class Storage {
     private readonly defaultStorage: IStorage = {
         search: [],
-        calcTotalTime: true,
+        time: {
+            enabled: true,
+            format: 'd',
+        },
         swaps: [],
         colors: [],
     };

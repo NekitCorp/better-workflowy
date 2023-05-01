@@ -125,13 +125,13 @@
                                 <Select bind:value={swap.key} options={KEYS} />
                             </td>
                             <td>
-                                <div class="previewInput">
+                                <div class="preview-input">
                                     <input type="text" bind:value={swap.insert} />
                                     <HashtagsPreview bind:value={swap.insert} />
                                 </div>
                             </td>
                             <td>
-                                <div class="previewInput">
+                                <div class="preview-input">
                                     <input type="text" bind:value={swap.delete} />
                                     <HashtagsPreview bind:value={swap.delete} />
                                 </div>
@@ -156,8 +156,47 @@
                 <b>#1d12h30m50s</b>
             </div>
             <label>
-                <input type="checkbox" bind:checked={options.calcTotalTime} />Enabled
+                <input type="checkbox" bind:checked={options.time.enabled} />Enabled
             </label>
+            <fieldset disabled={!options.time.enabled} class="time-format-container">
+                <span>Format:</span>
+                <label>
+                    <input
+                        type="radio"
+                        bind:group={options.time.format}
+                        name="time-format"
+                        value="d"
+                    />
+                    d
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        bind:group={options.time.format}
+                        name="time-format"
+                        value="h"
+                    />
+                    h
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        bind:group={options.time.format}
+                        name="time-format"
+                        value="m"
+                    />
+                    m
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        bind:group={options.time.format}
+                        name="time-format"
+                        value="s"
+                    />
+                    s
+                </label>
+            </fieldset>
         </Fieldset>
 
         <Fieldset title="🎨 Hashtag line color">
@@ -240,9 +279,17 @@
         align-items: center;
     }
 
-    .previewInput {
+    .preview-input {
         display: grid;
         gap: 4px;
+    }
+
+    .time-format-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        padding: 4px 0;
     }
 
     .footer {

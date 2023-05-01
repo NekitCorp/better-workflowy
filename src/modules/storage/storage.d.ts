@@ -3,12 +3,17 @@ type IHotkey = {
     key: string;
 };
 
+type FormatTime = 'd' | 'h' | 'm' | 's';
+
 type IStorage = {
     /** Search on hotkey */
     search: Array<IHotkey & { value: string }>;
 
     /** Calculate total hashtags time */
-    calcTotalTime: boolean;
+    time: {
+        enabled: boolean;
+        format: FormatTime;
+    };
 
     /** Swap hashtags on hotkey */
     swaps: Array<{ delete: string; insert: string } & IHotkey>;

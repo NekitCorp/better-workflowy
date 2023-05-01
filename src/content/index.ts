@@ -14,7 +14,7 @@ domManager.loadingApp().then(() => {
         console.log('[Better WorkFlowy] App loaded.');
         console.log(`[Better WorkFlowy] Options:`, JSON.stringify(data, null, 2));
 
-        new TimeManager(data.calcTotalTime, domManager).init();
+        new TimeManager(data.time, domManager).init();
         new HashtagColor(data.colors, domManager).init();
         new HotkeySearch(data.search, hotkeysManager).init();
         new HashtagSwap(data.swaps, hotkeysManager, domManager).init();

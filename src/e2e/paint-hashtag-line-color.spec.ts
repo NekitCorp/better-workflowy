@@ -11,7 +11,7 @@ test.describe('Paint hashtag line color', () => {
         await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
         await page.evaluate(() => {
             const storage: IStorage = {
-                calcTotalTime: true,
+                time: { enabled: false, format: 'd' },
                 colors: [
                     { background: '#ff0000', color: '#000000', hashtag: 'red' },
                     { background: '#005c02', color: '#ffffff', hashtag: 'green' },

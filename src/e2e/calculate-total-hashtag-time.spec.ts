@@ -15,7 +15,7 @@ test.describe('Calculate total hashtag time', () => {
             await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
             await page.evaluate(() => {
                 const storage: IStorage = {
-                    calcTotalTime: true,
+                    time: { enabled: true, format: 'd' },
                     colors: [],
                     search: [],
                     swaps: [],
@@ -52,7 +52,7 @@ test.describe('Calculate total hashtag time', () => {
             await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
             await page.evaluate(() => {
                 const storage: IStorage = {
-                    calcTotalTime: false,
+                    time: { enabled: false, format: 'd' },
                     colors: [],
                     search: [],
                     swaps: [],

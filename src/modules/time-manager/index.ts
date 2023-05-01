@@ -1,14 +1,14 @@
-import { getTagSeconds } from './utils';
+import { formatTime, getTagSeconds } from './utils';
 
 export class TimeManager implements ITimeManager {
     private HIGHLIGHT_COLOR = '#13cbd3';
     private COUNTER_ID = 'bw-time-counter';
     private timeCounterElement: HTMLDivElement | null = null;
 
-    constructor(private calcTotalTime: boolean, private domManager: IDomManager) {}
+    constructor(private time: IStorage['time'], private domManager: IDomManager) {}
 
     public init() {
-        if (this.calcTotalTime) {
+        if (this.time.enabled) {
             this.createTimeCounterElement();
             this.highlightTimeHashtag();
             this.renderTotalTime();
@@ -62,30 +62,8 @@ export class TimeManager implements ITimeManager {
         );
         let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
 
-        const days = Math.floor(totalSeconds / 86400);
-        if (days > 0) {
-            totalSeconds -= days * 86400;
-        }
-
-        const hours = Math.floor(totalSeconds / 3600);
-        if (hours > 0) {
-            totalSeconds -= hours * 3600;
-        }
-
-        const minutes = Math.floor(totalSeconds / 60);
-        if (minutes > 0) {
-            totalSeconds -= minutes * 60;
-        }
-
-        const seconds = totalSeconds;
-
-        const totalHtml =
-            (days > 0 ? days + 'd ' : '') +
-            (hours > 0 ? hours + 'h ' : '') +
-            (minutes > 0 ? minutes + 'm ' : '') +
-            (seconds > 0 ? seconds + 's' : '');
-
-        this.timeCounterElement.innerHTML = totalHtml;
+        // Render total time
+        this.timeCounterElement.innerHTML = formatTime(totalSeconds, this.time.format);
     };
 
     /**
