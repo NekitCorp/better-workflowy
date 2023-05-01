@@ -38,7 +38,7 @@
     function addColor() {
         options.colors = [
             ...options.colors,
-            { hashtag: '', color: '#ff0000', background: '#ff0000' },
+            { hashtag: '', color: '#000000', background: '#ff0000' },
         ];
     }
 
@@ -150,9 +150,13 @@
             <Button class="add-button" title="Add" variant="emoji" on:click={addSwap}>➕</Button>
         </Fieldset>
 
-        <Fieldset title="⚙️ Other settings">
+        <Fieldset title="🕒 Calculate total time">
+            <div style="margin-bottom: 10px">
+                🙋 Supported formats: <b>#1d</b>, <b>#2h</b>, <b>#3m</b>, <b>#4s</b>, <b>#2h30m</b>,
+                <b>#1d12h30m50s</b>
+            </div>
             <label>
-                <input type="checkbox" bind:checked={options.calcTotalTime} />Calculate total time
+                <input type="checkbox" bind:checked={options.calcTotalTime} />Enabled
             </label>
         </Fieldset>
 
@@ -163,6 +167,7 @@
                         <th>Hashtag</th>
                         <th>Font color</th>
                         <th>Background color</th>
+                        <th>Preview</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
@@ -172,6 +177,11 @@
                             <td><input type="text" bind:value={color.hashtag} /></td>
                             <td><input type="color" bind:value={color.color} /></td>
                             <td><input type="color" bind:value={color.background} /></td>
+                            <td>
+                                <span style:color={color.color} style:background={color.background}>
+                                    preview
+                                </span>
+                            </td>
                             <td>
                                 <Button
                                     title="Remove"
