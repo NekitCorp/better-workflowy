@@ -4,20 +4,24 @@ Google Chrome extension for improvement [workflowy](https://workflowy.com/)
 
 Features:
 
--   [Calculate total hashtag time](#calculate-total-hashtag-time)
--   [Filter by hashtags on hotkey](#filter-by-hashtags-on-hotkey)
+-   [Hotkey search](#hotkey-search)
 -   [Swap hashtags on hotkey](#swap-hashtags-on-hotkey)
--   [Paint hashtag line color](#paint-hashtag-line-color)
-
-## Extension settings
-
-![settings](/docs/img/settings.png)
+-   [Calculate total time](#calculate-total-time)
+-   [Hashtag line color](#hashtag-line-color)
 
 ## Features
 
-### Calculate total hashtag time
+### Hotkey search
 
-> Required option `Calculate total time` in extension settings
+![hotkey-search-options](/docs/hotkey-search-options.png)
+![hotkey-search-demo](/docs/hotkey-search-demo.gif)
+
+### Swap hashtags on hotkey
+
+![swap-hashtags-on-hotkey-options](/docs/swap-hashtags-on-hotkey-options.png)
+![swap-hashtags-on-hotkey-demo](/docs/swap-hashtags-on-hotkey-demo.gif)
+
+### Calculate total time
 
 #### Supported tags
 
@@ -26,41 +30,10 @@ Features:
 -   `m` - minutes
 -   `s` - seconds
 
-![presentation1](https://i.gyazo.com/534ccdf0b014a4c23fd7a186cd30c06c.gif)
-![presentation2](https://camo.githubusercontent.com/94e0e25e56485ae07d4188c4c333c49f4cf6c9f7/68747470733a2f2f73746f726167652e79616e646578636c6f75642e6e65742f7075626c69632d6d6174657269616c732f70726573656e746174696f6e322e676966)
+![calculate-total-time-options](/docs/calculate-total-time-options.png)
+![calculate-total-time-demo](/docs/calculate-total-time-demo.gif)
 
-### Filter by hashtags on hotkey
+### Hashtag line color
 
-> At the presentation below we click in turn `SHIFT + HOME`, `SHIFT + PAGEUP`
-
-![presentation3](https://i.gyazo.com/a565909e85cdcec5cf397a80645894da.gif)
-
-### Swap hashtags on hotkey
-
-> Required option `Swap hashtags on hotkey` in extension settings
-
-![presentation4](https://i.gyazo.com/8070f0fc6904d0a9621c7f81b7b3bcc9.gif)
-
-### Paint hashtag line color
-
-![paint-hashtag-line-color](/docs/img/paint-hashtag-line-color.gif)
-
-## Development
-
-[Getting Started Tutorial](https://developer.chrome.com/extensions/getstarted)
-
-```bash
-# build files to './public/build'
-# rollup.watch rebuilds your bundle when it detects changes
-npm run dev
-```
-
-```bash
-# production build files to './public/build'
-$ npm run build
-```
-
-```bash
-# run tests
-$ npm run test
-```
+![hashtag-line-color-options](/docs/hashtag-line-color-options.png)
+![hashtag-line-color-demo](/docs/hashtag-line-color-demo.gif)
