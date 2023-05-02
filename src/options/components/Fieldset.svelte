@@ -10,13 +10,11 @@
 <style>
     fieldset {
         border-radius: 5px;
-        border-color: var(--midnight-blue);
-        margin-bottom: 10px;
+        border: 1px solid var(--button-border-color);
     }
 
     legend {
-        background-color: var(--midnight-blue);
-        color: white;
+        border: 1px solid var(--button-border-color);
         font-weight: bold;
         border-radius: 5px;
         padding: 2px 15px;

@@ -1,0 +1,3 @@
+interface ITimeManager {
+    init(): void;
+}

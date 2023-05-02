@@ -1,0 +1,36 @@
+:root {
+    --background-color: #ffffff;
+    --main-color: rgb(26, 115, 232);
+    --button-color: transparent;
+    --button-hover-color: rgba(66, 133, 244, 0.04);
+    --button-active-color: rgba(66, 133, 244, 0.2);
+    --button-text-color: rgb(26, 115, 232);
+    --button-border-color: rgb(218, 220, 224);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: rgb(41, 42, 45);
+        --main-color: rgb(119, 169, 245);
+        --button-color: transparent;
+        --button-hover-color: rgba(138, 180, 248, 0.08);
+        --button-acrtive-color: rgba(138, 180, 248, 0.2);
+        --button-text-color: rgb(138, 180, 248);
+        --button-border-color: rgb(95, 99, 104);
+    }
+
+    html {
+        color-scheme: dark;
+    }
+}
+
+body {
+    font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    background-color: var(--background-color);
+}
+
+input,
+textarea,
+button {
+    font-family: inherit;
+}
