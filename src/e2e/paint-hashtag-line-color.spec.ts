@@ -1,28 +1,18 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { expect, test } from './fixtures.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const HTML_PATH = path.join(__dirname, './workflowy.html');
-
 test.describe('Paint hashtag line color', () => {
-    test.beforeEach(async ({ page, extensionId }) => {
-        await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
-        await page.evaluate(() => {
-            const storage: IStorage = {
-                time: { enabled: false, format: 'd' },
-                colors: [
-                    { background: '#ff0000', color: '#000000', hashtag: 'red' },
-                    { background: '#005c02', color: '#ffffff', hashtag: 'green' },
-                ],
-                search: [],
-                swaps: [],
-            };
+    test.beforeEach(async ({ testPage }) => {
+        const storage: IStorage = {
+            time: { enabled: false, format: 'd' },
+            colors: [
+                { background: '#ff0000', color: '#000000', hashtag: 'red' },
+                { background: '#005c02', color: '#ffffff', hashtag: 'green' },
+            ],
+            search: [],
+            swaps: [],
+        };
 
-            return chrome.storage.local.set(storage);
-        });
-        await page.goto(`file://${HTML_PATH}`);
+        await testPage.prepare(storage);
     });
 
     test('Check the color of lines that have the appropriate hashtags', async ({ page }) => {
@@ -41,7 +31,7 @@ test.describe('Paint hashtag line color', () => {
         await expect(greenLocator).toHaveCSS('background-color', 'rgb(0, 92, 2)');
     });
 
-    test.skip('Check color change when adding new hashtag', async ({ page }) => {
+    test('Check color change when adding new hashtag', async ({ page, testPage }) => {
         const redLocator = page.locator('.innerContentContainer', {
             has: page.locator(`text="Red"`),
         });
@@ -50,7 +40,7 @@ test.describe('Paint hashtag line color', () => {
             has: page.locator(`text="Red"`),
         });
         await lineLocator.focus();
-        await page.keyboard.press('End');
+        await page.keyboard.press(testPage.isMacOS ? 'Meta+ArrowRight' : 'End');
         await lineLocator.type(' #green');
 
         await expect(redLocator).toHaveCSS('color', 'rgb(255, 255, 255)');

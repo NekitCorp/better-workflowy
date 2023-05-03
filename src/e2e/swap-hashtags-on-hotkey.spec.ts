@@ -1,32 +1,22 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { expect, test } from './fixtures.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const HTML_PATH = path.join(__dirname, './workflowy.html');
-
 test.describe('Swap hashtags on hotkey', () => {
-    test.beforeEach(async ({ page, extensionId }) => {
-        await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
-        await page.evaluate(() => {
-            const storage: IStorage = {
-                time: { enabled: false, format: 'd' },
-                colors: [],
-                search: [],
-                swaps: [
-                    {
-                        specialKey: 'ctrl',
-                        key: '1',
-                        delete: 'test1 test2',
-                        insert: 'insert1 insert2',
-                    },
-                ],
-            };
+    test.beforeEach(async ({ testPage }) => {
+        const storage: IStorage = {
+            time: { enabled: false, format: 'd' },
+            colors: [],
+            search: [],
+            swaps: [
+                {
+                    specialKey: 'ctrl',
+                    key: '1',
+                    delete: 'test1 test2',
+                    insert: 'insert1 insert2',
+                },
+            ],
+        };
 
-            return chrome.storage.local.set(storage);
-        });
-        await page.goto(`file://${HTML_PATH}`);
+        await testPage.prepare(storage);
     });
 
     test('Check swap hashtags on hotkey', async ({ page }) => {
