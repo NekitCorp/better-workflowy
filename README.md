@@ -13,13 +13,17 @@ Features:
 
 ### Hotkey search
 
-![hotkey-search-options](/docs/hotkey-search-options.png)
-![hotkey-search-demo](/docs/hotkey-search-demo.gif)
+|         |                                                           |
+| ------- | --------------------------------------------------------- |
+| Options | ![hotkey-search-options](/docs/hotkey-search-options.png) |
+| Demo    | ![hotkey-search-demo](/docs/hotkey-search-demo.gif)       |
 
 ### Swap hashtags on hotkey
 
-![swap-hashtags-on-hotkey-options](/docs/swap-hashtags-on-hotkey-options.png)
-![swap-hashtags-on-hotkey-demo](/docs/swap-hashtags-on-hotkey-demo.gif)
+|         |                                                                               |
+| ------- | ----------------------------------------------------------------------------- |
+| Options | ![swap-hashtags-on-hotkey-options](/docs/swap-hashtags-on-hotkey-options.png) |
+| Demo    | ![swap-hashtags-on-hotkey-demo](/docs/swap-hashtags-on-hotkey-demo.gif)       |
 
 ### Calculate total time
 
@@ -30,10 +34,14 @@ Features:
 -   `m` - minutes
 -   `s` - seconds
 
-![calculate-total-time-options](/docs/calculate-total-time-options.png)
-![calculate-total-time-demo](/docs/calculate-total-time-demo.gif)
+|         |                                                                         |
+| ------- | ----------------------------------------------------------------------- |
+| Options | ![calculate-total-time-options](/docs/calculate-total-time-options.png) |
+| Demo    | ![calculate-total-time-demo](/docs/calculate-total-time-demo.gif)       |
 
 ### Hashtag line color
 
-![hashtag-line-color-options](/docs/hashtag-line-color-options.png)
-![hashtag-line-color-demo](/docs/hashtag-line-color-demo.gif)
+|         |                                                                     |
+| ------- | ------------------------------------------------------------------- |
+| Options | ![hashtag-line-color-options](/docs/hashtag-line-color-options.png) |
+| Demo    | ![hashtag-line-color-demo](/docs/hashtag-line-color-demo.gif)       |
