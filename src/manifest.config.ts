@@ -16,9 +16,10 @@ export default defineManifest(async (env) => ({
     version: `${major}.${minor}.${patch}`,
     version_name: version,
     icons: {
-        '16': 'src/assets/icons/icon16.png',
-        '48': 'src/assets/icons/icon48.png',
-        '128': 'src/assets/icons/icon128.png',
+        '16': 'src/assets/icons/icon-16.png',
+        '32': 'src/assets/icons/icon-32.png',
+        '48': 'src/assets/icons/icon-48.png',
+        '128': 'src/assets/icons/icon-128.png',
     },
     permissions: ['storage', 'scripting'] as chrome.runtime.ManifestPermissions[],
     options_ui: {
