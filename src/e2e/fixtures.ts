@@ -63,12 +63,14 @@ export const test = base.extend<{
     // https://playwright.dev/docs/test-fixtures
     testPage: async ({ page, extensionId }, use) => {
         async function prepare(storage: IStorage): Promise<void> {
+            const CONTENT_INPUT_LOCATOR = '.children > .project > .name .content[contenteditable]';
+
             await page.goto(`chrome-extension://${extensionId}/src/options/options.html`);
             await page.evaluate((data: IStorage) => chrome.storage.local.set(data), storage);
             await page.goto('https://workflowy.com/online-notepad-test/');
-            await page.locator('.addChildButton').click();
+            await page.waitForSelector(CONTENT_INPUT_LOCATOR);
             await page.evaluate((text) => navigator.clipboard.writeText(text), TEST_DATA);
-            await page.locator('.content[contenteditable]').last().press(`${controlKey}+V`);
+            await page.locator(CONTENT_INPUT_LOCATOR).press(`${controlKey}+V`);
         }
 
         await use({ prepare, isMacOS });

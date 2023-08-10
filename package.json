@@ -7,9 +7,9 @@
         "build": "vite build",
         "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
         "check:tsc": "tsc --noEmit",
-        "test": "vitest",
-        "e2e": "yarn build && playwright test",
-        "e2e:ui": "yarn build && playwright test --ui"
+        "test:unit": "vitest",
+        "test:e2e": "yarn build && playwright test",
+        "test:e2e:ui": "yarn build && playwright test --ui"
     },
     "repository": {
         "type": "git",
