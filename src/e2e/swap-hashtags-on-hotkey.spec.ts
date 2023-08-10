@@ -80,4 +80,30 @@ test.describe('Swap hashtags on hotkey', () => {
             });
         }
     });
+
+    /**
+     * @link https://github.com/NekitCorp/better-workflowy/issues/28
+     */
+    test("Don't move cursor to the beginning of a line when swap hashtags", async ({ page }) => {
+        await page
+            .locator('.content[contenteditable]', {
+                has: page.locator(`text="Job 1"`),
+            })
+            .focus();
+        await page.keyboard.press('Control+1');
+
+        await expect(page.getByText('Job 1')).toHaveText('Job 1 #dd #insert1 #insert2', {
+            useInnerText: true,
+        });
+        // https://stackoverflow.com/questions/3972014/get-contenteditable-caret-position
+        expect(
+            await page.evaluate(() =>
+                (
+                    window.getSelection().getRangeAt(0).commonAncestorContainer as HTMLElement
+                ).classList.contains('content'),
+            ),
+        ).toBeTruthy();
+        expect(await page.evaluate(() => window.getSelection().getRangeAt(0).startOffset)).toBe(1);
+        expect(await page.evaluate(() => window.getSelection().getRangeAt(0).endOffset)).toBe(1);
+    });
 });

@@ -19,5 +19,5 @@ jobs:
             # Tests
             - run: yarn check:tsc
             - run: yarn check:svelte
-            - run: yarn test
+            - run: yarn test:unit
             - run: yarn build
