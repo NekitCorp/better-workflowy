@@ -5,12 +5,15 @@ export class HashtagSwap {
         private domManager: IDomManager,
     ) {}
 
-    init() {
+    public init() {
         for (const swap of this.swaps) {
             this.hotkeysManager.setHotKey(`${swap.specialKey}+${swap.key}`, () => {
                 const activeElement = document.activeElement;
 
-                if (activeElement.matches('.content[contenteditable]')) {
+                if (
+                    activeElement instanceof HTMLElement &&
+                    activeElement.matches('.content[contenteditable]')
+                ) {
                     const innerContentContainer =
                         activeElement.querySelector('.innerContentContainer');
 
@@ -35,11 +38,31 @@ export class HashtagSwap {
                         }
 
                         // Reset focus to force save changes in workflowy
-                        (activeElement as HTMLElement).blur();
-                        (activeElement as HTMLElement).focus();
+                        activeElement.blur();
+                        activeElement.focus();
+                        this.contenteditableSetCaretAtEnd(activeElement);
                     }
                 }
             });
+        }
+    }
+
+    /**
+     * `contenteditable`, set caret at the end of the text.
+     * @link https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
+     */
+    private contenteditableSetCaretAtEnd(element: HTMLElement) {
+        if (
+            typeof window.getSelection !== 'undefined' &&
+            typeof document.createRange !== 'undefined'
+        ) {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            range.collapse(false);
+
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
     }
 }
