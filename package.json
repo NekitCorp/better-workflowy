@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "package": "vite build && zip -r package.zip dist/",
         "check:svelte": "svelte-check --tsconfig ./tsconfig.json",
         "check:tsc": "tsc --noEmit",
         "test:unit": "vitest",

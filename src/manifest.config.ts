@@ -28,21 +28,11 @@ export default defineManifest(async (env) => ({
     },
     content_scripts: [
         {
-            matches: [
-                '*://www.workflowy.com/*',
-                '*://workflowy.com/*',
-                // For e2e tests
-                'file:///*/workflowy.html',
-            ],
+            matches: ['*://www.workflowy.com/*', '*://workflowy.com/*'],
             js: ['src/content/index.ts'],
         },
     ],
-    host_permissions: [
-        '*://www.workflowy.com/*',
-        '*://workflowy.com/*',
-        // For e2e tests
-        'file:///*/workflowy.html',
-    ],
+    host_permissions: ['*://www.workflowy.com/*', '*://workflowy.com/*'],
     background: {
         service_worker: 'src/background/index.ts',
     },
