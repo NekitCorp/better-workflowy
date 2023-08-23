@@ -33,6 +33,21 @@ Better WorkFlowy
     - Override to green #red #green
 `;
 
+export const TEST_STORAGE: IStorage = {
+    time: { enabled: true, format: 'd' },
+    colors: [
+        { background: '#ff0000', color: '#000000', hashtag: 'red' },
+        { background: '#005c02', color: '#ffffff', hashtag: 'green' },
+    ],
+    search: [
+        { specialKey: 'shift', key: '1', value: '#today' },
+        { specialKey: 'shift', key: '2', value: '#tomorrow #5m' },
+        { specialKey: 'shift', key: '3', value: 'common' },
+        { specialKey: 'shift', key: '4', value: '' },
+    ],
+    swaps: [{ specialKey: 'ctrl', key: '1', delete: 'test1 test2', insert: 'insert1 insert2' }],
+};
+
 export const test = base.extend<{
     context: BrowserContext;
     extensionId: string;

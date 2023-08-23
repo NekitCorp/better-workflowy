@@ -5,17 +5,19 @@ export class TimeManager implements ITimeManager {
     private COUNTER_ID = 'bw-time-counter';
     private timeCounterElement: HTMLDivElement | null = null;
 
-    constructor(private time: IStorage['time'], private domManager: IDomManager) {}
+    constructor(
+        private format: FormatTime,
+        private domManager: IDomManager,
+        private logger: ILogger,
+    ) {}
 
     public init() {
-        if (this.time.enabled) {
-            this.createTimeCounterElement();
-            this.highlightTimeHashtag();
-            this.renderTotalTime();
+        this.createTimeCounterElement();
+        this.highlightTimeHashtag();
+        this.renderTotalTime();
 
-            this.domManager.subscribe(this.highlightTimeHashtag);
-            this.domManager.subscribe(this.renderTotalTime);
-        }
+        this.domManager.subscribe(this.highlightTimeHashtag);
+        this.domManager.subscribe(this.renderTotalTime);
     }
 
     private createTimeCounterElement() {
@@ -32,7 +34,7 @@ export class TimeManager implements ITimeManager {
         const breadcrumbs = header.querySelector('.breadcrumbs');
 
         if (!header || !breadcrumbs) {
-            console.error(`[Better WorkFlowy] Elements not found: ".header" or ".breadcrumbs".`);
+            this.logger.error(`Elements not found: ".header" or ".breadcrumbs".`);
             return;
         }
 
@@ -63,7 +65,7 @@ export class TimeManager implements ITimeManager {
         let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
 
         // Render total time
-        this.timeCounterElement.innerHTML = formatTime(totalSeconds, this.time.format);
+        this.timeCounterElement.innerHTML = formatTime(totalSeconds, this.format);
     };
 
     /**

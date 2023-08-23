@@ -1,20 +1,22 @@
 const PAGE_ELEMENT_CLASS_NAME = 'page';
 const CONTENT_ROW_ELEMENT_CLASS_NAME = 'innerContentContainer';
 const TAG_ELEMENT_TEXT_CLASS_NAME = 'contentTagText';
+const APP_LOAD_TIMEOUT = 30; // seconds
 
 export class DomManager implements IDomManager {
     private resolveLoadingPromise: (() => void) | null = null;
     private subscribers: ((node: HTMLElement) => void)[] = [];
 
-    constructor() {
+    constructor(private logger: ILogger) {
         this.observe();
     }
 
     public loadingApp(): Promise<void> {
         return new Promise((res) => {
             if (document.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)) {
-                return res();
+                res();
             } else {
+                this.startAppLoadWaiting();
                 this.resolveLoadingPromise = res;
             }
         });
@@ -49,6 +51,34 @@ export class DomManager implements IDomManager {
         this.subscribers.push(callback);
     }
 
+    /**
+     * Start a timer waiting for the app to load.
+     */
+    private startAppLoadWaiting() {
+        let seconds = 0;
+
+        const interval = setInterval(() => {
+            seconds += 1;
+
+            if (this.resolveLoadingPromise === null) {
+                return clearInterval(interval);
+            }
+
+            if (document.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)) {
+                clearInterval(interval);
+                this.resolveLoadingPromise();
+                this.resolveLoadingPromise = null;
+            }
+
+            if (seconds > APP_LOAD_TIMEOUT) {
+                clearInterval(interval);
+                this.logger.error(
+                    `Failed to wait for the app to load within ${APP_LOAD_TIMEOUT} seconds.`,
+                );
+            }
+        }, 1 * 1000);
+    }
+
     private observe() {
         const observer = new MutationObserver((mutations) => {
             for (const mutation of mutations) {
@@ -57,13 +87,12 @@ export class DomManager implements IDomManager {
 
                     // Detect app load
                     if (
-                        node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
-                        node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)
+                        this.resolveLoadingPromise !== null &&
+                        (node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
+                            node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`))
                     ) {
-                        if (this.resolveLoadingPromise) {
-                            this.resolveLoadingPromise();
-                            this.resolveLoadingPromise = null;
-                        }
+                        this.resolveLoadingPromise();
+                        this.resolveLoadingPromise = null;
                     }
 
                     // Detect any changes on content rows with hashtags

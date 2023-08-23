@@ -1,9 +1,9 @@
-export function triggerInputEvent(value: string) {
+export function triggerInputEvent(value: string, logger: ILogger) {
     const SEARCH_INPUT_ID = 'srch-input';
     const input = document.getElementById(SEARCH_INPUT_ID);
 
     if (!(input instanceof HTMLInputElement)) {
-        console.error(`[Better WorkFlowy] Search input #${SEARCH_INPUT_ID} not found.`);
+        logger.error(`Search input #${SEARCH_INPUT_ID} not found.`);
         return;
     }
 

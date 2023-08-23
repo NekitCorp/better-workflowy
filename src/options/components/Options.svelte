@@ -55,8 +55,6 @@
             }, 1500);
         });
     }
-
-    $: console.log(options);
 </script>
 
 <div class="container">
