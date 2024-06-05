@@ -8,7 +8,8 @@ export class DomManager implements IDomManager {
     private subscribers: ((node: HTMLElement) => void)[] = [];
 
     constructor(private logger: ILogger) {
-        this.observe();
+        const observer = new MutationObserver(this.mutationCallback);
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     public loadingApp(): Promise<void> {
@@ -79,34 +80,39 @@ export class DomManager implements IDomManager {
         }, 1 * 1000);
     }
 
-    private observe() {
-        const observer = new MutationObserver((mutations) => {
-            for (const mutation of mutations) {
-                for (const node of mutation.addedNodes) {
-                    if (!(node instanceof HTMLElement)) continue;
-
-                    // Detect app load
-                    if (
-                        this.resolveLoadingPromise !== null &&
-                        (node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
-                            node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`))
-                    ) {
-                        this.resolveLoadingPromise();
-                        this.resolveLoadingPromise = null;
-                    }
-
-                    // Detect any changes on content rows with hashtags
-                    if (node.classList.contains(CONTENT_ROW_ELEMENT_CLASS_NAME)) {
-                        const contentTag = node.querySelector(`.${TAG_ELEMENT_TEXT_CLASS_NAME}`);
-
-                        if (contentTag) {
-                            this.subscribers.forEach((c) => c(node));
-                        }
-                    }
-                }
+    private mutationCallback: MutationCallback = (
+        mutations: MutationRecord[],
+        observer: MutationObserver,
+    ): void => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                this.processingChangedNode(node);
             }
-        });
+        }
+    };
 
-        observer.observe(document.body, { childList: true, subtree: true });
+    private processingChangedNode(node: Node): void {
+        if (!(node instanceof HTMLElement)) {
+            return;
+        }
+
+        // Detect app load
+        if (
+            this.resolveLoadingPromise !== null &&
+            (node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
+                node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`))
+        ) {
+            this.resolveLoadingPromise();
+            this.resolveLoadingPromise = null;
+        }
+
+        // Detect any changes on content rows with hashtags
+        if (node.classList.contains(CONTENT_ROW_ELEMENT_CLASS_NAME)) {
+            const contentTag = node.querySelector(`.${TAG_ELEMENT_TEXT_CLASS_NAME}`);
+
+            if (contentTag) {
+                this.subscribers.forEach((c) => c(node));
+            }
+        }
     }
 }

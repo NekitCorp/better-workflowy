@@ -1,3 +1,4 @@
+import { requestIdleInterval } from '../request-idle-interval';
 import { formatTime, getTagSeconds } from './utils';
 
 export class TimeManager implements ITimeManager {
@@ -17,7 +18,7 @@ export class TimeManager implements ITimeManager {
         this.renderTotalTime();
 
         this.domManager.subscribe(this.highlightTimeHashtag);
-        this.domManager.subscribe(this.renderTotalTime);
+        requestIdleInterval(this.renderTotalTime, { interval: 1000 });
     }
 
     private createTimeCounterElement() {
