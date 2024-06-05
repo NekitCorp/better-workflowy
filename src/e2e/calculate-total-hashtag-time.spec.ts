@@ -37,6 +37,31 @@ test.describe('Calculate total hashtag time', () => {
                 }
             }
         });
+
+        // The total time must be recalculated when expanding and collapsing the item containing time.
+        test('Consider expanding and collapsing an item', async ({ page, testPage }) => {
+            const toggle = page
+                .locator('.name', { hasText: 'Swap hashtags on hotkey' })
+                .locator('a[data-handbook="expand.toggle"]');
+
+            // Collapse
+            await toggle.click();
+
+            // Waiting for requestIdleInterval
+            await page.waitForTimeout(1000);
+
+            // Minus 5 hours
+            await expect(page.locator('#bw-time-counter')).toHaveText('2d 9h 42m 14s');
+
+            // Expand
+            await toggle.click();
+
+            // Waiting for requestIdleInterval
+            await page.waitForTimeout(1000);
+
+            // Total time should return
+            await expect(page.locator('#bw-time-counter')).toHaveText('2d 14h 42m 14s');
+        });
     });
 
     test.describe('Option disabled', () => {
