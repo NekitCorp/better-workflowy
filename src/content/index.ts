@@ -1,3 +1,4 @@
+import { AppLoader } from '../modules/app-loader';
 import { DomManager } from '../modules/dom-manager';
 import { HashtagColor } from '../modules/hashtag-color';
 import { HashtagSwap } from '../modules/hashtag-swap';
@@ -8,13 +9,15 @@ import { storage } from '../modules/storage';
 import { TimeManager } from '../modules/time-manager';
 
 const logger = new Logger();
-const domManager = new DomManager(logger);
-const hotkeysManager = new HotkeysManager(logger);
+const appLoader = new AppLoader(logger);
 
 logger.log('Waiting for app loading...');
 
-domManager.loadingApp().then(() => {
+appLoader.wait().then(() => {
     logger.log('App loaded! Modules initializing...');
+
+    const domManager = new DomManager(logger);
+    const hotkeysManager = new HotkeysManager(logger);
 
     storage.readStorage((data) => {
         logger.log('Options: ' + JSON.stringify(data));

@@ -1,10 +1,13 @@
 import { requestIdleInterval } from '../request-idle-interval';
 import { formatTime, getTagSeconds } from './utils';
 
+const PAGE_CONTAINER_SELECTOR = '.pageContainer';
+const COUNTER_ID = 'bw-time-counter';
+const HIGHLIGHT_COLOR = '#13cbd3';
+
 export class TimeManager implements ITimeManager {
-    private HIGHLIGHT_COLOR = '#13cbd3';
-    private COUNTER_ID = 'bw-time-counter';
     private timeCounterElement: HTMLDivElement | null = null;
+    private pageContainer: HTMLDivElement;
 
     constructor(
         private format: FormatTime,
@@ -13,17 +16,24 @@ export class TimeManager implements ITimeManager {
     ) {}
 
     public init() {
+        this.pageContainer = document.querySelector(PAGE_CONTAINER_SELECTOR);
+
+        if (!this.pageContainer) {
+            this.logger.error(`Element ${PAGE_CONTAINER_SELECTOR} not found.`);
+            return;
+        }
+
         this.createTimeCounterElement();
         this.highlightTimeHashtag();
         this.renderTotalTime();
 
-        this.domManager.subscribe(this.highlightTimeHashtag);
+        this.domManager.subscribeToContentChanges(this.highlightTimeHashtag);
         requestIdleInterval(this.renderTotalTime, { interval: 1000 });
     }
 
     private createTimeCounterElement() {
         // Try find already added counter
-        const counter = document.getElementById(this.COUNTER_ID);
+        const counter = document.getElementById(COUNTER_ID);
 
         if (counter instanceof HTMLDivElement) {
             this.timeCounterElement = counter;
@@ -42,7 +52,7 @@ export class TimeManager implements ITimeManager {
         // Create counter div element
         const div = document.createElement('div');
 
-        div.id = this.COUNTER_ID;
+        div.id = COUNTER_ID;
         div.style.fontSize = 13 + 'px';
         div.style.marginRight = 10 + 'px';
 
@@ -60,7 +70,7 @@ export class TimeManager implements ITimeManager {
         }
 
         // Calculate total time
-        const tags = [...document.querySelectorAll('.contentTag')].map(
+        const tags = [...this.pageContainer.querySelectorAll('.contentTag')].map(
             (el: HTMLElement) => el.innerText,
         );
         let totalSeconds = tags.reduce((acc, val) => acc + getTagSeconds(val), 0);
@@ -73,11 +83,11 @@ export class TimeManager implements ITimeManager {
      * Highlight recognized time tags
      */
     private highlightTimeHashtag = () => {
-        const tags = document.querySelectorAll('.contentTag');
+        const tags = this.pageContainer.querySelectorAll('.contentTag');
 
         for (const tag of tags) {
             if (getTagSeconds((tag as HTMLElement).innerText) > 0) {
-                (tag as HTMLElement).style.outline = `1px dashed ${this.HIGHLIGHT_COLOR}`;
+                (tag as HTMLElement).style.outline = `1px dashed ${HIGHLIGHT_COLOR}`;
             }
         }
     };

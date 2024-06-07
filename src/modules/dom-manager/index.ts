@@ -1,25 +1,22 @@
-const PAGE_ELEMENT_CLASS_NAME = 'page';
+const PAGE_CONTAINER_SELECTOR = '.pageContainer';
 const CONTENT_ROW_ELEMENT_CLASS_NAME = 'innerContentContainer';
 const TAG_ELEMENT_TEXT_CLASS_NAME = 'contentTagText';
-const APP_LOAD_TIMEOUT = 30; // seconds
 
 export class DomManager implements IDomManager {
-    private resolveLoadingPromise: (() => void) | null = null;
     private subscribers: ((node: HTMLElement) => void)[] = [];
 
     constructor(private logger: ILogger) {
-        const observer = new MutationObserver(this.mutationCallback);
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
+        const pageContainer = document.querySelector(PAGE_CONTAINER_SELECTOR);
 
-    public loadingApp(): Promise<void> {
-        return new Promise((res) => {
-            if (document.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)) {
-                res();
-            } else {
-                this.startAppLoadWaiting();
-                this.resolveLoadingPromise = res;
-            }
+        if (!pageContainer) {
+            this.logger.error(`Element ${PAGE_CONTAINER_SELECTOR} not found.`);
+            return;
+        }
+
+        const observer = new MutationObserver(this.mutationCallback);
+        observer.observe(pageContainer, {
+            childList: true,
+            subtree: true,
         });
     }
 
@@ -48,36 +45,8 @@ export class DomManager implements IDomManager {
         return container;
     }
 
-    public subscribe(callback: (node: HTMLElement) => void) {
+    public subscribeToContentChanges(callback: (node: HTMLElement) => void) {
         this.subscribers.push(callback);
-    }
-
-    /**
-     * Start a timer waiting for the app to load.
-     */
-    private startAppLoadWaiting() {
-        let seconds = 0;
-
-        const interval = setInterval(() => {
-            seconds += 1;
-
-            if (this.resolveLoadingPromise === null) {
-                return clearInterval(interval);
-            }
-
-            if (document.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`)) {
-                clearInterval(interval);
-                this.resolveLoadingPromise();
-                this.resolveLoadingPromise = null;
-            }
-
-            if (seconds > APP_LOAD_TIMEOUT) {
-                clearInterval(interval);
-                this.logger.error(
-                    `Failed to wait for the app to load within ${APP_LOAD_TIMEOUT} seconds.`,
-                );
-            }
-        }, 1 * 1000);
     }
 
     private mutationCallback: MutationCallback = (
@@ -94,16 +63,6 @@ export class DomManager implements IDomManager {
     private processingChangedNode(node: Node): void {
         if (!(node instanceof HTMLElement)) {
             return;
-        }
-
-        // Detect app load
-        if (
-            this.resolveLoadingPromise !== null &&
-            (node.matches(`.${PAGE_ELEMENT_CLASS_NAME}`) ||
-                node.querySelector(`.${PAGE_ELEMENT_CLASS_NAME}`))
-        ) {
-            this.resolveLoadingPromise();
-            this.resolveLoadingPromise = null;
         }
 
         // Detect any changes on content rows with hashtags

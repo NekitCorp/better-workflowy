@@ -95,7 +95,9 @@
                     {/each}
                 </tbody>
             </table>
-            <Button class="add-button" title="Add" variant="emoji" on:click={addSearch}>➕</Button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addSearch}>
+                ➕ Add
+            </Button>
         </Fieldset>
 
         <Fieldset title="🔀 Swap hashtags on hotkey">
@@ -145,7 +147,9 @@
                     {/each}
                 </tbody>
             </table>
-            <Button class="add-button" title="Add" variant="emoji" on:click={addSwap}>➕</Button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addSwap}>
+                ➕ Add
+            </Button>
         </Fieldset>
 
         <Fieldset title="🕒 Calculate total time">
@@ -230,7 +234,9 @@
                     {/each}
                 </tbody>
             </table>
-            <Button class="add-button" title="Add" variant="emoji" on:click={addColor}>➕</Button>
+            <Button class="add-button" title="Add" variant="emoji" on:click={addColor}>
+                ➕ Add
+            </Button>
         </Fieldset>
 
         <div class="footer">
@@ -268,8 +274,9 @@
     }
 
     .container :global(.add-button) {
-        display: flex;
-        margin: 0 auto;
+        width: 100%;
+        border-radius: 0;
+        color: initial;
     }
 
     label {
