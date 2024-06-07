@@ -6,7 +6,7 @@ export class HashtagColor {
             this.paintColorHashtagLine(node as HTMLElement);
         }
 
-        this.domManager.subscribe(this.paintColorHashtagLine);
+        this.domManager.subscribeToContentChanges(this.paintColorHashtagLine);
     }
 
     private paintColorHashtagLine = (node: HTMLElement) => {
