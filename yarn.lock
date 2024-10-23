@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@crxjs/vite-plugin@2.0.0-beta.18":
-  version "2.0.0-beta.18"
-  resolved "https://registry.yarnpkg.com/@crxjs/vite-plugin/-/vite-plugin-2.0.0-beta.18.tgz#2097f268712172440644cae8dd7668bb3674958f"
-  integrity sha512-3jW20cUE04wTTg8HtoQD7bIL4Nhu91pRX4PHazMu2/tzzSTaR4stW5DHRIJOjFuRpOSCNNpyamyXwxS6qOv7Bg==
+"@crxjs/vite-plugin@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@crxjs/vite-plugin/-/vite-plugin-2.0.0-beta.26.tgz#72e5d17b63d250bec663e0556b94de4834deff85"
+  integrity sha512-fZiSeOB4LOwq3cLIwHJnJ4x/duBU/Gkn3JKF7b7mZIRAXtu1waorJ6QaH7qoZPcN5LzyA3J+/t3Kuwa/oo8XNg==
   dependencies:
     "@rollup/pluginutils" "^4.1.2"
     "@webcomponents/custom-elements" "^1.5.0"
