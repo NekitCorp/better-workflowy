@@ -15,9 +15,9 @@ jobs:
               with:
                   node-version: 18
             # Install dependencies
-            - run: yarn
+            - run: npm install
             # Tests
-            - run: yarn check:tsc
-            - run: yarn check:svelte
-            - run: yarn test:unit
-            - run: yarn build
+            - run: npm run check:tsc
+            - run: npm run check:svelte
+            - run: npm run test:unit
+            - run: npm run build

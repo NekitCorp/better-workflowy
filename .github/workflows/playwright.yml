@@ -16,13 +16,13 @@ jobs:
               with:
                   node-version: 18
             - name: Install dependencies
-              run: yarn
+              run: npm install
             - name: Build extension
-              run: yarn build
+              run: npm run build
             - name: Install Playwright Browsers
-              run: yarn playwright install --with-deps chromium
+              run: npm run playwright install --with-deps chromium
             - name: Run Playwright tests
-              run: yarn playwright test
+              run: npm run playwright test
             - uses: actions/upload-artifact@v3
               if: always()
               with:

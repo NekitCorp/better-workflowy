@@ -86,6 +86,7 @@ export const test = base.extend<{
             await page.waitForSelector(CONTENT_INPUT_LOCATOR);
             await page.evaluate((text) => navigator.clipboard.writeText(text), TEST_DATA);
             await page.locator(CONTENT_INPUT_LOCATOR).press(`${controlKey}+V`);
+            await page.locator(CONTENT_INPUT_LOCATOR).last().press('Enter');
         }
 
         await use({ prepare, isMacOS });
