@@ -9,6 +9,7 @@
 
 <style>
     fieldset {
+        display: grid;
         border-radius: 5px;
         border: 1px solid var(--button-border-color);
     }

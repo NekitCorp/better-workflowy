@@ -1,4 +1,10 @@
 type IHotkey = {
+    /** Full hotkey combo for hotkeys-js, e.g. `shift+1` or `ctrl+shift+a` */
+    shortcut: string;
+};
+
+/** @deprecated Legacy format kept for storage migration */
+type IHotkeyLegacy = {
     specialKey: string;
     key: string;
 };

@@ -40,12 +40,12 @@ export const TEST_STORAGE: IStorage = {
         { background: '#005c02', color: '#ffffff', hashtag: 'green' },
     ],
     search: [
-        { specialKey: 'shift', key: '1', value: '#today' },
-        { specialKey: 'shift', key: '2', value: '#tomorrow #5m' },
-        { specialKey: 'shift', key: '3', value: 'common' },
-        { specialKey: 'shift', key: '4', value: '' },
+        { shortcut: 'shift+1', value: '#today' },
+        { shortcut: 'shift+2', value: '#tomorrow #5m' },
+        { shortcut: 'shift+3', value: 'common' },
+        { shortcut: 'shift+4', value: '' },
     ],
-    swaps: [{ specialKey: 'ctrl', key: '1', delete: 'test1 test2', insert: 'insert1 insert2' }],
+    swaps: [{ shortcut: 'ctrl+1', delete: 'test1 test2', insert: 'insert1 insert2' }],
 };
 
 export const test = base.extend<{

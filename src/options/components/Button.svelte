@@ -29,14 +29,16 @@
         padding: 8px 16px;
         user-select: none;
         line-height: 1;
+        font-size: 12px;
     }
 
     .emoji {
-        border-radius: 50%;
-        height: 24px;
-        width: 24px;
+        width: 28px;
+        height: 28px;
         padding: 0;
-        font-size: 12px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
     }
 
     .button:hover {

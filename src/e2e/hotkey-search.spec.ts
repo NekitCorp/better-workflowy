@@ -6,10 +6,10 @@ test.describe('Hotkey search', () => {
             time: { enabled: false, format: 'd' },
             colors: [],
             search: [
-                { specialKey: 'shift', key: '1', value: '#today' },
-                { specialKey: 'shift', key: '2', value: '#tomorrow #5m' },
-                { specialKey: 'shift', key: '3', value: 'common' },
-                { specialKey: 'shift', key: '4', value: '' },
+                { shortcut: 'shift+1', value: '#today' },
+                { shortcut: 'shift+2', value: '#tomorrow #5m' },
+                { shortcut: 'shift+3', value: 'common' },
+                { shortcut: 'shift+4', value: '' },
             ],
             swaps: [],
         };

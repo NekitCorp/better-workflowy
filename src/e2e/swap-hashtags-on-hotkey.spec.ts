@@ -8,8 +8,7 @@ test.describe('Swap hashtags on hotkey', () => {
             search: [],
             swaps: [
                 {
-                    specialKey: 'ctrl',
-                    key: '1',
+                    shortcut: 'ctrl+1',
                     delete: 'test1 test2',
                     insert: 'insert1 insert2',
                 },

@@ -3,7 +3,7 @@ export class HotkeySearch {
 
     async init() {
         for (const item of this.search) {
-            this.hotkeysManager.setHotKey(`${item.specialKey}+${item.key}`, () => {
+            this.hotkeysManager.setHotKey(item.shortcut, () => {
                 // If you are injecting the code as a content script the code is being executed in an "isolated world".
                 // So, for fire input event, we need alternatively use `chrome.scripting.executeScript()`
                 // with world option set to 'MAIN' from background scripts.

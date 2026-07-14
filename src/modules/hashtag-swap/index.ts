@@ -7,7 +7,7 @@ export class HashtagSwap {
 
     public init() {
         for (const swap of this.swaps) {
-            this.hotkeysManager.setHotKey(`${swap.specialKey}+${swap.key}`, () => {
+            this.hotkeysManager.setHotKey(swap.shortcut, () => {
                 const activeElement = document.activeElement;
 
                 if (

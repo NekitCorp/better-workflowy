@@ -1,3 +1,5 @@
+import { migrateStorage } from './migrate';
+
 class Storage {
     private readonly defaultStorage: IStorage = {
         search: [],
@@ -13,7 +15,8 @@ class Storage {
         // for backward compatibility
         chrome.storage.sync.get(null, (syncData) => {
             chrome.storage.local.get(null, (localData) => {
-                callback({ ...this.defaultStorage, ...syncData, ...localData });
+                const data = { ...this.defaultStorage, ...syncData, ...localData } as IStorage;
+                callback(migrateStorage(data));
             });
         });
     }
