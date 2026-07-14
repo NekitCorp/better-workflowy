@@ -14,10 +14,13 @@ jobs:
             - uses: actions/setup-node@v6
               with:
                   node-version: 24
-            # Install dependencies
-            - run: npm install
-            # Tests
-            - run: npm run check:tsc
-            - run: npm run check:svelte
-            - run: npm run test:unit
-            - run: npm run build
+            - name: Install dependencies
+              run: npm ci
+            - name: Run tsc check
+              run: npm run check:tsc
+            - name: Run svelte check
+              run: npm run check:svelte
+            - name: Run unit tests
+              run: npm run test:unit
+            - name: Build extension
+              run: npm run build
