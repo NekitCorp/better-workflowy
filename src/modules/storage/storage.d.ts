@@ -31,3 +31,13 @@ type IStorage = {
         background: string;
     }[];
 };
+
+type ISyncMeta = {
+    /** Unix time in ms of the last write to sync storage */
+    updatedAt: number;
+};
+
+type ISyncedSettings = {
+    data: IStorage;
+    updatedAt: number;
+};

@@ -19,7 +19,7 @@ appLoader.wait().then(() => {
     const domManager = new DomManager(logger);
     const hotkeysManager = new HotkeysManager(logger);
 
-    storage.readStorage((data) => {
+    storage.readStorage().then((data) => {
         logger.log('Options: ' + JSON.stringify(data));
 
         if (data.time.enabled) {
