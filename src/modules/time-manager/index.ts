@@ -42,7 +42,7 @@ export class TimeManager implements ITimeManager {
 
         // Try find header
         const header = document.querySelector('.header');
-        const breadcrumbs = header.querySelector('.breadcrumbs');
+        const breadcrumbs = header?.querySelector('.breadcrumbs');
 
         if (!header || !breadcrumbs) {
             this.logger.error(`Elements not found: ".header" or ".breadcrumbs".`);

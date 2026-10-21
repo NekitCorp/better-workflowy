@@ -1,10 +1,10 @@
-export function triggerInputEvent(value: string, logger: ILogger) {
+/** Returns `false` if the search input is not found */
+export function triggerInputEvent(value: string): boolean {
     const SEARCH_INPUT_ID = 'srch-input';
     const input = document.getElementById(SEARCH_INPUT_ID);
 
     if (!(input instanceof HTMLInputElement)) {
-        logger.error(`Search input #${SEARCH_INPUT_ID} not found.`);
-        return;
+        return false;
     }
 
     // https://stackoverflow.com/questions/35659430/how-do-i-programmatically-trigger-an-input-event-without-jquery
@@ -19,4 +19,6 @@ export function triggerInputEvent(value: string, logger: ILogger) {
     }
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    return true;
 }

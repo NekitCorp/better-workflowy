@@ -40,7 +40,7 @@ export class DomManager implements IDomManager {
         contentTagNub.className = 'contentTagNub';
 
         container.append(contentTagText);
-        container.append(contentTagText);
+        container.append(contentTagNub);
 
         return container;
     }

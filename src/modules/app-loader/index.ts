@@ -29,7 +29,7 @@ export class AppLoader {
         for (const mutation of mutations) {
             for (const node of mutation.addedNodes) {
                 if (!(node instanceof HTMLElement)) {
-                    return;
+                    continue;
                 }
 
                 // Detect app load
