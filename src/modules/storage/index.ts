@@ -3,7 +3,7 @@ const SETTINGS_KEYS: Array<keyof IStorage> = ['search', 'time', 'swaps', 'colors
 /** Local-only flag: each device decides on its own whether to sync */
 const SYNC_ENABLED_KEY = 'syncEnabled';
 
-/** Written to sync storage together with settings to tell them apart from legacy (pre-local) data */
+/** Written to sync storage together with settings; its presence means the account has synced settings */
 const SYNC_META_KEY = 'syncMeta';
 
 class Storage {
@@ -24,12 +24,7 @@ class Storage {
         }
 
         const localData = await chrome.storage.local.get(SETTINGS_KEYS);
-        const syncData = await chrome.storage.sync.get([...SETTINGS_KEYS, SYNC_META_KEY]);
-
-        // for backward compatibility: settings were stored in sync storage before
-        const legacyData = syncData[SYNC_META_KEY] ? {} : syncData;
-
-        return this.normalize({ ...legacyData, ...localData });
+        return this.normalize(localData);
     }
 
     public async writeStorage(data: IStorage): Promise<void> {

@@ -48,10 +48,10 @@ describe('storage', () => {
         expect(sync.dump()).toEqual({});
     });
 
-    it('falls back to legacy sync data when there is no sync meta', async () => {
+    it('ignores sync data without sync meta', async () => {
         await sync.set({ colors: SETTINGS_A.colors });
 
-        expect((await storage.readStorage()).colors).toEqual(SETTINGS_A.colors);
+        expect((await storage.readStorage()).colors).toEqual([]);
         expect(await storage.getSyncedSettings()).toBeNull();
     });
 
