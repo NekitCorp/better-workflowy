@@ -15,7 +15,7 @@ test.describe('Settings sync', () => {
     });
 
     test('Uploads local settings when the account has none', async ({ page }) => {
-        await page.getByLabel('Sync settings').check();
+        await page.getByLabel('Sync settings').click();
         await expect(page.getByLabel('Sync settings')).toBeChecked();
 
         const synced = await page.evaluate(() => chrome.storage.sync.get(['colors', 'syncMeta']));
@@ -38,8 +38,9 @@ test.describe('Settings sync', () => {
     });
 
     test('Keeps synced settings locally after turning sync off', async ({ page }) => {
-        await page.getByLabel('Sync settings').check();
-        await page.getByLabel('Sync settings').uncheck();
+        await page.getByLabel('Sync settings').click();
+        await expect(page.getByLabel('Sync settings')).toBeChecked();
+        await page.getByLabel('Sync settings').click();
         await expect(page.getByLabel('Sync settings')).not.toBeChecked();
 
         const local = await page.evaluate(() =>
