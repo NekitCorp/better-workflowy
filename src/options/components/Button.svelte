@@ -1,6 +1,7 @@
 <script lang="ts">
     export let variant: 'default' | 'emoji' = 'default';
     export let title = '';
+    export let disabled = false;
 </script>
 
 <button
@@ -9,6 +10,7 @@
     class:button={true}
     class:emoji={variant === 'emoji'}
     {title}
+    {disabled}
     on:click
 >
     <slot />
@@ -41,11 +43,16 @@
         border-radius: 50%;
     }
 
-    .button:hover {
+    .button:disabled {
+        cursor: default;
+        opacity: 0.6;
+    }
+
+    .button:hover:not(:disabled) {
         background-color: var(--button-hover-color);
     }
 
-    .button:active {
+    .button:active:not(:disabled) {
         background-color: var(--button-active-color);
     }
 </style>

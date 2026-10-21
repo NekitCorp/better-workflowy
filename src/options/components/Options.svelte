@@ -12,12 +12,71 @@
 
     let options: IStorage | null = null;
     let saveButtonText = 'Save';
+    let saveError = '';
 
-    onMount(() => {
-        storage.readStorage((data) => {
-            options = data;
-        });
+    let syncEnabled = false;
+    let syncBusy = false;
+    let syncError = '';
+    /** Settings found in the account while enabling sync, waiting for the user's choice */
+    let pendingSynced: ISyncedSettings | null = null;
+
+    onMount(async () => {
+        syncEnabled = await storage.isSyncEnabled();
+        options = await storage.readStorage();
     });
+
+    async function onSyncToggle(event: Event) {
+        const input = event.currentTarget as HTMLInputElement;
+        const wanted = input.checked;
+        // the checkbox reflects the actual state only
+        input.checked = syncEnabled;
+
+        await runSyncAction(async () => {
+            if (!wanted) {
+                await storage.disableSync();
+                syncEnabled = false;
+                return;
+            }
+
+            const synced = await storage.getSyncedSettings();
+
+            if (synced) {
+                pendingSynced = synced;
+            } else {
+                options = await storage.enableSync('upload', options);
+                syncEnabled = true;
+            }
+        });
+    }
+
+    async function resolveSync(strategy: 'upload' | 'download') {
+        await runSyncAction(async () => {
+            options = await storage.enableSync(strategy, options);
+            syncEnabled = true;
+            pendingSynced = null;
+        });
+    }
+
+    async function runSyncAction(action: () => Promise<void>) {
+        syncBusy = true;
+        syncError = '';
+
+        try {
+            await action();
+        } catch (error) {
+            syncError = error instanceof Error ? error.message : String(error);
+        } finally {
+            syncBusy = false;
+        }
+    }
+
+    function describeSettings(data: IStorage): string {
+        return [
+            `${data.search.length} hotkey searches`,
+            `${data.swaps.length} hashtag swaps`,
+            `${data.colors.length} line colors`,
+        ].join(', ');
+    }
 
     function addSearch() {
         options.search = [...options.search, { value: '', shortcut: 'shift+home' }];
@@ -46,19 +105,63 @@
         options.colors = options.colors.filter((color) => color !== value);
     }
 
-    function save() {
-        storage.writeStorage(options, () => {
-            saveButtonText = '✅ Saved!';
+    async function save() {
+        saveError = '';
 
-            setTimeout(() => {
-                saveButtonText = 'Save';
-            }, 1500);
-        });
+        try {
+            await storage.writeStorage(options);
+        } catch (error) {
+            saveError = error instanceof Error ? error.message : String(error);
+            return;
+        }
+
+        saveButtonText = '✅ Saved!';
+
+        setTimeout(() => {
+            saveButtonText = 'Save';
+        }, 1500);
     }
 </script>
 
 <div class="container">
     {#if options}
+        <Fieldset title="☁️ Settings sync">
+            <div style="margin-bottom: 10px">
+                🙋 Sync settings across computers via your Google account (requires Chrome sync)
+            </div>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={syncEnabled}
+                    disabled={syncBusy || pendingSynced !== null}
+                    on:change={onSyncToggle}
+                />Sync settings
+            </label>
+            {#if pendingSynced}
+                <div class="sync-choice">
+                    <div>
+                        Your account already has settings saved on
+                        <b>{new Date(pendingSynced.updatedAt).toLocaleString()}</b>
+                        ({describeSettings(pendingSynced.data)}).
+                    </div>
+                    <div class="sync-choice-buttons">
+                        <Button disabled={syncBusy} on:click={() => resolveSync('download')}>
+                            Use synced settings
+                        </Button>
+                        <Button disabled={syncBusy} on:click={() => resolveSync('upload')}>
+                            Upload this computer's settings
+                        </Button>
+                        <Button disabled={syncBusy} on:click={() => (pendingSynced = null)}>
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
+            {/if}
+            {#if syncError}
+                <div class="error">❌ {syncError}</div>
+            {/if}
+        </Fieldset>
+
         <Fieldset title="🔍 Hotkey search">
             <div>🙋 Search by text: <b>products</b></div>
             <div>🙋 Single hashtag search: <b>#today</b></div>
@@ -236,6 +339,9 @@
 
         <div class="footer">
             <Button on:click={save}>{saveButtonText}</Button>
+            {#if saveError}
+                <span class="error">❌ {saveError}</span>
+            {/if}
         </div>
     {:else}
         <p>Loading...</p>
@@ -296,6 +402,21 @@
         gap: 8px;
         border: none;
         padding: 4px 0;
+    }
+
+    .sync-choice {
+        display: grid;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .sync-choice-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .error {
+        color: #d32f2f;
     }
 
     .footer {

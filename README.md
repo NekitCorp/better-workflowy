@@ -8,6 +8,7 @@ Features:
 -   [Swap hashtags on hotkey](#swap-hashtags-on-hotkey)
 -   [Calculate total time](#calculate-total-time)
 -   [Hashtag line color](#hashtag-line-color)
+-   [Settings sync](#settings-sync)
 
 ## Features
 
@@ -45,3 +46,11 @@ Features:
 | ------- | ------------------------------------------------------------------- |
 | Options | ![hashtag-line-color-options](/docs/hashtag-line-color-options.png) |
 | Demo    | ![hashtag-line-color-demo](/docs/hashtag-line-color-demo.gif)       |
+
+### Settings sync
+
+Settings are stored locally by default. Enable **Settings sync** on the options page to share them across computers via your Google account (requires Chrome sync).
+
+-   If the account has no synced settings yet, this computer's settings are uploaded.
+-   If it does, you choose between using the synced settings and overwriting them with this computer's.
+-   Turning sync off keeps the current settings on this computer.
