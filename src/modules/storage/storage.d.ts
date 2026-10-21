@@ -3,12 +3,6 @@ type IHotkey = {
     shortcut: string;
 };
 
-/** @deprecated Legacy format kept for storage migration */
-type IHotkeyLegacy = {
-    specialKey: string;
-    key: string;
-};
-
 type FormatTime = 'd' | 'h' | 'm' | 's';
 
 type IStorage = {

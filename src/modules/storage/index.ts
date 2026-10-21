@@ -1,5 +1,3 @@
-import { migrateStorage } from './migrate';
-
 const SETTINGS_KEYS: Array<keyof IStorage> = ['search', 'time', 'swaps', 'colors'];
 
 /** Local-only flag: each device decides on its own whether to sync */
@@ -102,7 +100,7 @@ class Storage {
     }
 
     private normalize(data: Record<string, unknown>): IStorage {
-        return migrateStorage({ ...this.defaultStorage, ...this.pickSettings(data) } as IStorage);
+        return { ...this.defaultStorage, ...this.pickSettings(data) };
     }
 
     private pickSettings(data: Record<string, unknown>): Partial<IStorage> {
